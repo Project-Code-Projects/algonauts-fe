@@ -5,6 +5,7 @@ import "./globals.css";
 import Providers from "@/lib/Providers";
 import Navbar from "@/components/shared/Navbar";
 import { useRouter } from "next/navigation";
+import { Toaster } from "react-hot-toast";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -18,8 +19,6 @@ export const metadata: Metadata = {
   description: " Kids can play games! Waster their childhood with coding ",
 };
 
-
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +27,8 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <body className={`${nunito.className} `}>
+        <body className={`${nunito.className} bg-blue-100`}>
+          <Toaster position="top-center" />
           <Navbar />
           {children}
         </body>

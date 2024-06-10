@@ -1,57 +1,68 @@
 "use client";
+import SpinAnimation from "@/components/ui/SpinAnimation";
+import { useGetParentbyUserIdQuery } from "@/redux/api/parentApi";
+import { useGetStudentByParentIdQuery } from "@/redux/api/studentApi";
 import { getUserInfo } from "@/services/auth.service";
-import Image from "next/image";
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const ParentProfilePage = () => {
-  // const router = useRouter();
-  // const userInfo = getUserInfo();
+  const userInfo = getUserInfo();
+  const parentId = userInfo?._id;
 
-  // useEffect(() => {
-  //   if (!userInfo || userInfo.type !== "parent") {
-  //     router.push("/"); // Redirect to home if not parent
-  //   }
-  // }, [userInfo, router]);
+  const {
+    data: parentDataFromBE,
+    isLoading,
+    isError,
+  } = useGetParentbyUserIdQuery(parentId);
 
-  // if (!userInfo || userInfo.type !== "parent") {
-  //   return null; // Return null to prevent rendering if not parent
-  // }
+  const { data: studentsByParentId } = useGetStudentByParentIdQuery(parentId);
+
+  if (isLoading) {
+    return <SpinAnimation />;
+  }
+
+  if (isError || !parentDataFromBE) {
+    return (
+      <div className="flex items-center justify-center h-screen text-red-500">
+        Error occurred while fetching data.
+      </div>
+    );
+  }
+
+  const parentData = parentDataFromBE?.data[0]?.userId;
+  const studentData = studentsByParentId?.data;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white shadow-md rounded-lg p-6 md:w-1/2 w-full">
-        <div className="flex flex-col items-center">
-          <Image
-            src="https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="Profile"
-            className="rounded-full w-32 h-32 mb-4"
-            width={200}
-            height={200}
-          />
-          <h1 className="text-2xl font-bold mb-2">John Doe</h1>
-          <p className="text-gray-600 mb-4">Software Engineer</p>
-          <p className="text-center text-gray-600 mb-6">
-            Passionate about technology and coding. Loves to build web
-            applications and explore new frameworks.
-          </p>
-          <div className="w-full flex justify-around">
-            <a
-              href="mailto:johndoe@example.com"
-              className="text-blue-500 hover:underline"
-            >
-              johndoe@example.com
-            </a>
-            <a
-              href="https://www.linkedin.com/in/johndoe"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
-            >
-              LinkedIn
-            </a>
+    <div className="min-h-[92vh] flex flex-col items-center justify-center">
+      <h1 className="text-2xl font-bold mb-4">
+        Parent Name: {parentData.name}{" "}
+      </h1>
+      <h1 className="text-2xl font-bold mb-8">
+        Parent userId: {parentData._id}{" "}
+      </h1>
+
+      <div className="mb-8">
+        <Link href={"/parent/addStudent"}>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Add Child
+          </button>
+        </Link>
+      </div>
+
+      <div className="text-lg font-semibold mb-4">List of Children</div>
+      <div>
+        {studentData?.map((student: any) => (
+          <div key={student._id} className="mb-4 p-4 border rounded">
+            <h2 className="text-xl font-bold">{student.userId.name}</h2>
+            <p>Email: {student.userId.email}</p>
+            <p>Status: {student.status}</p>
+            <p>Password: {student.userId.password}</p>
+            <p>
+              Created At:{" "}
+              {new Date(student.userId.createdAt).toLocaleDateString()}
+            </p>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
