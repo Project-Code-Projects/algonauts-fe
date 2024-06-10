@@ -1,8 +1,9 @@
+// src/pages/login.tsx
 "use client";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useUserLoginMutation } from "@/redux/api/authApi";
-import { getUserInfo, storeUserInfo } from "@/services/auth.service";
+import { storeUserInfo, getUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
@@ -19,11 +20,14 @@ const LoginPage = () => {
     try {
       const loginResponse = await userLogin(data).unwrap();
       console.log(loginResponse);
+
       if (loginResponse?.success) {
         storeUserInfo({ token: loginResponse?.data?.token });
-        const { type } = getUserInfo() as any;
-        console.log(type);
-        router.push(`/${type}`);
+        const userInfo = getUserInfo() as any;
+        if (userInfo) {
+          console.log(userInfo.type);
+          router.push(`/${userInfo.type}`);
+        }
       }
     } catch (error) {
       // Handle login error
@@ -49,7 +53,7 @@ const LoginPage = () => {
 
           <h2 className="text-gray-900 text-2xl mb-2 font-bold">PASSWORD:</h2>
           <input
-            type="text"
+            type="password"
             className="w-full p-2 mb-4 border-2 border-gray-900 rounded"
             placeholder="**********"
             {...register("password", { required: "Password is required" })}

@@ -1,10 +1,17 @@
-
+// src/services/auth.service.ts
 import { authKey } from "@/constants/storageKey";
 import { decodedToken } from "@/utils/jwt";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-storage";
 
 export const storeUserInfo = ({ token }: { token: string }) => {
-  return setToLocalStorage(authKey, token as string);
+  // Set the token in the local storage
+  setToLocalStorage(authKey, token);
+
+  // Set the token in the cookie
+  const expirationDate = new Date();
+  expirationDate.setDate(expirationDate.getDate() + 7); // Set the cookie to expire in 7 days
+  const cookieValue = `${authKey}=${token}; expires=${expirationDate.toUTCString()}; path=/`;
+  document.cookie = cookieValue;
 };
 
 export const getUserInfo = () => {
@@ -12,29 +19,19 @@ export const getUserInfo = () => {
   if (authToken) {
     const decodedData = decodedToken(authToken);
     return decodedData;
-  } else {
-    return "";
   }
+  return null; // Return null if no token is found
 };
-
-/*
-getUserInfo-- I will get the decoded data from the token, for example the id and role. 
-*/
 
 export const isLoggedIn = () => {
   const authToken = getFromLocalStorage(authKey);
   return !!authToken;
 };
 
-/*
-isLoggedIn-- This will return either true or false. 
-I will check this time to time to see if the user is logged in or not. 
-*/
-
 export const removeUserInfo = (key: string) => {
-  return localStorage.removeItem(key);
-};
+  // Remove the token from local storage
+  localStorage.removeItem(key);
 
-/*
-removeUserInfo- After the user has logged out, I will remove the token from the local storage
-*/
+  // Remove the token from cookies by setting the expiration date to the past
+  document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+};

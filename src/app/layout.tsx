@@ -4,6 +4,7 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import Providers from "@/lib/Providers";
 import Navbar from "@/components/shared/Navbar";
+import { useRouter } from "next/navigation";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -16,6 +17,8 @@ export const metadata: Metadata = {
   title: "Algonauts",
   description: " Kids can play games! Waster their childhood with coding ",
 };
+
+
 
 export default function RootLayout({
   children,

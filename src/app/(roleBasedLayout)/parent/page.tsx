@@ -1,7 +1,23 @@
+"use client";
+import { getUserInfo } from "@/services/auth.service";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const ParentProfilePage = () => {
+  // const router = useRouter();
+  // const userInfo = getUserInfo();
+
+  // useEffect(() => {
+  //   if (!userInfo || userInfo.type !== "parent") {
+  //     router.push("/"); // Redirect to home if not parent
+  //   }
+  // }, [userInfo, router]);
+
+  // if (!userInfo || userInfo.type !== "parent") {
+  //   return null; // Return null to prevent rendering if not parent
+  // }
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="bg-white shadow-md rounded-lg p-6 md:w-1/2 w-full">
