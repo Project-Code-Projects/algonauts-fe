@@ -1,4 +1,5 @@
 "use client";
+import SpinAnimation from "@/components/ui/SpinAnimation";
 import { useGetStudentByUserIdQuery } from "@/redux/api/studentApi";
 import { getUserInfo } from "@/services/auth.service";
 import Link from "next/link";
@@ -15,11 +16,7 @@ const StudentPage = () => {
   } = useGetStudentByUserIdQuery(userId);
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        Loading...
-      </div>
-    );
+    return <SpinAnimation />;
   }
 
   if (isError) {
