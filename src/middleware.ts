@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { decodedToken } from "@/utils/jwt";
 import { authKey } from "./constants/storageKey";
+import { USER_TYPE } from "./constants/type";
 
 export async function middleware(req: NextRequest) {
   console.log("Middleware triggered for:", req.nextUrl.pathname);
@@ -25,12 +26,17 @@ export async function middleware(req: NextRequest) {
   }
 
   if (req.nextUrl.pathname.startsWith("/parent")) {
-    if (!userInfo || userInfo.type !== "parent") {
+    if (!userInfo || userInfo.type !== USER_TYPE.PARENT) {
       console.log("Redirecting to homepage from /parent route");
       return NextResponse.redirect(new URL("/", req.url));
     }
   } else if (req.nextUrl.pathname.startsWith("/student")) {
-    if (!userInfo || userInfo.type !== "student") {
+    if (!userInfo || userInfo.type !== USER_TYPE.STUDENT) {
+      console.log("Redirecting to homepage from /student route");
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  } else if (req.nextUrl.pathname.startsWith("/instructor")) {
+    if (!userInfo || userInfo.type !== USER_TYPE.INSTRUCTOR) {
       console.log("Redirecting to homepage from /student route");
       return NextResponse.redirect(new URL("/", req.url));
     }
