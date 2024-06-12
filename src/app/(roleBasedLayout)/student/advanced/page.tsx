@@ -8,14 +8,6 @@ type Example = {
   explanation?: string;
 };
 
-type TestCase = {
-  nums?: number[];
-  target?: number;
-  s?: string[];
-  x?: number;
-  expected: number[] | boolean;
-};
-
 type Problem = {
   title: string;
   description: string;
