@@ -12,13 +12,12 @@ interface Question {
   __v: number;
 }
 
-
 const HelpRequestInstructorComponent = ({ data }: { data: Question[] }) => {
   const userInfo = getUserInfo();
   const userId = userInfo?._id;
   const instructorId = userInfo?.instructorId;
 
- const [updateHelpRequest] = useUpdateHelpRequestMutation();
+  const [updateHelpRequest] = useUpdateHelpRequestMutation();
   return (
     <div className="container mx-auto p-8 bg-white shadow-md">
       <h1 className="text-3xl font-bold text-center mb-6">Student Questions</h1>
@@ -43,15 +42,26 @@ const HelpRequestInstructorComponent = ({ data }: { data: Question[] }) => {
               <strong>Updated At:</strong>{" "}
               {new Date(item.updatedAt).toLocaleString()}
             </p>
-            {item.status === 'pending' && (
+            {item.status === "pending" && (
               <button
-                onClick={() => 
-                  updateHelpRequest({ id: item._id, data: { status: 'accepted', instructorId:instructorId } })
+                onClick={() =>
+                  updateHelpRequest({
+                    id: item._id,
+                    data: { status: "accepted", instructorId: instructorId },
+                  })
                 }
                 className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
               >
                 Accept
               </button>
+            )}
+            {item.status === "accepted" && (
+              <a
+                href={`/meeting/${item._id}`}
+                className="mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+              >
+                Join Meeting
+              </a>
             )}
           </li>
         ))}

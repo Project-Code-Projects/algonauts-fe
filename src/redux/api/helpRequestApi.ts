@@ -31,6 +31,7 @@ const helpRequestApi = baseApi.injectEndpoints({
         url: `${URL}/update/${id}`,
         method: "PUT",
         data: data,
+        body: data,
       }),
       invalidatesTags: [tagTypes.helpRequest],
     }),
