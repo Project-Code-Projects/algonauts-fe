@@ -10,8 +10,8 @@ interface ProblemCardProps {
   title: string;
   description: string;
   examples: Example[];
-  constraints: string[];
-  followUp: string;
+  constraints?: string[];
+  followUp?: string;
 }
 
 const ProblemCard: React.FC<ProblemCardProps> = ({
@@ -46,7 +46,7 @@ const ProblemCard: React.FC<ProblemCardProps> = ({
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-2">Constraints:</h2>
         <ul className="list-disc list-inside bg-gray-100 p-4 rounded">
-          {constraints.map((constraint, index) => (
+          {constraints?.map((constraint, index) => (
             <li key={index}>{constraint}</li>
           ))}
         </ul>
