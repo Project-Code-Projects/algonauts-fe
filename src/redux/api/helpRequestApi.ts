@@ -34,11 +34,24 @@ const helpRequestApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.helpRequest],
     }),
+
+    getHelpRequestById: build.query({
+      query: (id) => ({
+        url: `${URL}/${id}`,
+        method: "GET",
+      }),
+      providesTags: (result, error, id) => [{ type: tagTypes.helpRequest, id }],
+    }),
+    
+
   }),
+
+
+
 });
 
 
-export const { useCreateHelpRequestMutation, useGetHelpRequestQuery, useUpdateHelpRequestMutation } = helpRequestApi;
+export const { useCreateHelpRequestMutation, useGetHelpRequestQuery, useUpdateHelpRequestMutation , useGetHelpRequestByIdQuery} = helpRequestApi;
 
 
 
