@@ -38,9 +38,12 @@ const Navbar = () => {
           <div>
             <button className="text-gray-600">Instructors</button>
           </div>
-          <a href="#" className="text-gray-600">
+          <Link href="/parent" className="text-gray-600">
             Parents
-          </a>
+          </Link>
+          <Link href="/student" className="text-gray-600">
+            Students
+          </Link>
         </div>
         {loggedIn ? (
           <button
