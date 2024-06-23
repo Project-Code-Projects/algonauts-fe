@@ -3,7 +3,6 @@
 import type { Edge, OnConnect } from "reactflow";
 import LinkedList from "./utils/LinkedList";
 import Game from "./game/Game1";
-import { GameScene } from "./utils/gameScene";
 import FlowContext from "./context/FlowContext";
 import { useCallback, useState } from "react";
 import {
@@ -24,6 +23,15 @@ import { edgeTypes } from "./edges";
 import { traverseMovementChain } from "./utils/traverseMovementChain";
 import './index.css';
 
+// Mock Data
+const gameData = {
+  player: { x: 50, y: 398 },
+  spacecraft: { x: 300, y: 300 },
+  blackholes: [
+    { x: 50, y: 200 },
+    { x: 300, y: 398 }
+  ]
+};
 
 export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -157,6 +165,47 @@ export default function App() {
     }
   }
 
+  console.log('edges', edges, 'nodes', nodes, 'linkedList', movementChain);
+
+  function fetchNodeById(id, nodes) {
+    return nodes.find(node => node.id === id);
+  }
+
+  function generateCode(startNodeId, nodes, edges) {
+    let code = 'function game() {\n';
+    let visited = new Set();
+  
+    function traverse(nodeId, indent = '  ') {
+      if (visited.has(nodeId)) return;
+      visited.add(nodeId);
+  
+      const node = fetchNodeById(nodeId, nodes);
+      if (!node) return;
+  
+      if (node.type === 'textUpdater' && node.data.dir === 'move') {
+        code += `${indent}move(${node.data.times}); // Node "${node.id}" moves ${node.data.times} time${node.data.times > 1 ? 's' : ''}\n`;
+      }
+  
+      if (node.type === 'forNode') {
+        code += `${indent}for (let i = 0; i < ${node.data.times}; i++) { // Node "${node.id}" (forNode) iterates ${node.data.times} times\n`;
+        const childrenEdges = edges.filter(edge => edge.source === nodeId);
+        childrenEdges.forEach(edge => {
+          traverse(edge.target, indent + '  ');
+        });
+        code += `${indent}}\n`;
+      } else {
+        const nextEdge = edges.find(edge => edge.source === nodeId);
+        if (nextEdge) {
+          traverse(nextEdge.target, indent);
+        }
+      }
+    }
+  
+    traverse(startNodeId);
+    code += '}\n';
+    return code;
+  }
+
   return (
     <FlowContext.Provider
       value={{
@@ -194,9 +243,8 @@ export default function App() {
             <Controls />
           </ReactFlow>
         </div>
-        <Game setGameScene={setGameScene} />
+        <Game setGameScene={setGameScene} gameData={gameData} />
       </div>
     </FlowContext.Provider>
   );
 }
-
