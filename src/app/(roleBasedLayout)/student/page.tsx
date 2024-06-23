@@ -3,26 +3,24 @@ import SpinAnimation from "@/components/ui/SpinAnimation";
 import { useGetStudentByUserIdQuery } from "@/redux/api/studentApi";
 import { getUserInfo } from "@/services/auth.service";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useForm, SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
-import { IHelpRequest } from "@/types/helpRequest";
+
 import {
   useGetHelpRequestQuery,
   useCreateHelpRequestMutation,
 } from "@/redux/api/helpRequestApi";
 import HelpRequestStudentComponent from "@/components/helpRequest/HelpRequestStudentComponent";
 import NotificationComponent from "@/components/NotificationComponent";
-
 
 type HelpFormValues = {
   question: string;
@@ -81,8 +79,6 @@ const StudentPage = () => {
       </div>
     );
   }
-
-
 
   // help request submit handler
   const onSubmit: SubmitHandler<HelpFormValues> = async (data) => {
@@ -152,11 +148,10 @@ const StudentPage = () => {
         </div>
       </div>
 
-
       {/* Help request component */}
 
       {helpRequestData.data && helpRequestData.data.length > 0 && (
-        <HelpRequestStudentComponent data={helpRequestData.data} />  
+        <HelpRequestStudentComponent data={helpRequestData.data} />
       )}
 
       {/* <HelpRequestStudentComponent data={helpRequestData} /> */}

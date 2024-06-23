@@ -1,11 +1,22 @@
 export enum tagTypes {
-   student = "student",
+  student = "student",
   user = "user",
   parent = "parent",
   helpRequest = "helpRequest",
+  section = "section",
+  chapter = "chapter",
+  editorLevel = "editorLevel",
 }
 
-export const tagTypesList = [tagTypes.student, tagTypes.user, tagTypes.parent, tagTypes.helpRequest];
+export const tagTypesList = [
+  tagTypes.student,
+  tagTypes.user,
+  tagTypes.parent,
+  tagTypes.helpRequest,
+  tagTypes.section,
+  tagTypes.chapter,
+  tagTypes.editorLevel,
+];
 
 /*
 These tags gets used like this:

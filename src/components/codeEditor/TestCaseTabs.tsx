@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 interface TestCase {
-  nums: number[];
-  target?: number;
-  expected: number[];
+  input: any;
+  target?: any;
+  expected: any;
 }
 
 interface TestCases {
@@ -15,7 +15,14 @@ interface TestCaseTabsProps {
 }
 
 const TestCaseTabs: React.FC<TestCaseTabsProps> = ({ testCases }) => {
-  const [activeTab, setActiveTab] = useState("case1");
+  const [activeTab, setActiveTab] = useState(Object.keys(testCases)[0]);
+
+  const formatValue = (value: any): string => {
+    if (typeof value === "object" && value !== null) {
+      return JSON.stringify(value);
+    }
+    return String(value);
+  };
 
   return (
     <div>
@@ -24,7 +31,7 @@ const TestCaseTabs: React.FC<TestCaseTabsProps> = ({ testCases }) => {
         {Object.keys(testCases).map((key) => (
           <button
             key={key}
-            className={`px-4 py-2 ${
+            className={`px-4 py-2 mr-2 ${
               activeTab === key ? "bg-blue-500 text-white" : "bg-gray-200"
             } rounded`}
             onClick={() => setActiveTab(key)}
@@ -35,12 +42,11 @@ const TestCaseTabs: React.FC<TestCaseTabsProps> = ({ testCases }) => {
       </div>
       <div className="bg-gray-100 p-4 rounded">
         <h3 className="text-lg font-bold">{activeTab}</h3>
-        <p>nums = {JSON.stringify(testCases[activeTab].nums)}</p>
-        {testCases[activeTab].target && (
-          <p>target = {testCases[activeTab].target}</p>
+        <p>Input: {formatValue(testCases[activeTab].input)}</p>
+        {testCases[activeTab].target !== undefined && (
+          <p>Target: {formatValue(testCases[activeTab].target)}</p>
         )}
-
-        <p>Expected = {JSON.stringify(testCases[activeTab].expected)}</p>
+        <p>Expected: {formatValue(testCases[activeTab].expected)}</p>
       </div>
     </div>
   );
