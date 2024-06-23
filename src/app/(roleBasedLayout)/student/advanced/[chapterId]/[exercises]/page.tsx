@@ -10,6 +10,12 @@ type IParams = {
   exercises: string;
 };
 
+type ITestCase = {
+  input: any;
+  expected: any;
+  target?: any;
+};
+
 const ExercisePage = ({ params }: { params: IParams }) => {
   const { exercises: exerciseId } = params;
   const {
@@ -68,7 +74,7 @@ const ExercisePage = ({ params }: { params: IParams }) => {
       const func = new Function(`return (${code})`)();
       const newResults: string[] = [];
       for (const [key, testCase] of Object.entries(testCases)) {
-        let { input, target, expected } = testCase;
+        let { input, target, expected } = testCase as ITestCase;
 
         let output;
         if (target !== undefined) {
