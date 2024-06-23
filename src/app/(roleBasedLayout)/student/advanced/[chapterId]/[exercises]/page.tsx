@@ -5,6 +5,7 @@ import Editor from "@monaco-editor/react";
 import { useGetEditorLevelByExerciseIdQuery } from "@/redux/api/editorLevelApi";
 import ProblemCard from "@/components/codeEditor/ProblemCard";
 import TestCaseTabs from "@/components/codeEditor/TestCaseTabs";
+import usePreventConsole from "@/hooks/usePreventConsole";
 
 type IParams = {
   exercises: string;
@@ -27,6 +28,9 @@ const ExercisePage = ({ params }: { params: IParams }) => {
   const [code, setCode] = useState<string>("");
   const [results, setResults] = useState<string[]>([]);
 
+  const switchTabCount = usePreventConsole();
+  console.log("I am tab count", switchTabCount);
+
   useEffect(() => {
     if (EditorLevelDataFromBE?.data[0]) {
       setCode(EditorLevelDataFromBE.data[0].functionPlaceholder);
@@ -41,7 +45,6 @@ const ExercisePage = ({ params }: { params: IParams }) => {
   }
 
   const problemData = EditorLevelDataFromBE?.data[0];
-  console.log("preblemData", problemData);
 
   if (!problemData) {
     return <div>No data found</div>;
@@ -69,6 +72,7 @@ const ExercisePage = ({ params }: { params: IParams }) => {
     }
     return true;
   };
+
   const runCode = () => {
     try {
       const func = new Function(`return (${code})`)();
@@ -126,6 +130,7 @@ const ExercisePage = ({ params }: { params: IParams }) => {
   return (
     <div className="flex overflow-hidden h-[92vh]">
       <Toaster />
+
       <div className="w-1/4 overflow-y-auto h-screen p-4">
         <ProblemCard
           title={title}
@@ -150,6 +155,23 @@ const ExercisePage = ({ params }: { params: IParams }) => {
             readOnly: false,
             cursorStyle: "line",
             automaticLayout: true,
+            contextmenu: false, // Disable right-click menu
+            copyWithSyntaxHighlighting: false, // Disable copy with syntax highlighting
+          }}
+          onMount={(editor, monaco) => {
+            // Disable copy-paste in the editor
+            editor.addCommand(
+              monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyC,
+              () => {}
+            );
+            editor.addCommand(
+              monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV,
+              () => {}
+            );
+            editor.addCommand(
+              monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyX,
+              () => {}
+            );
           }}
         />
 
