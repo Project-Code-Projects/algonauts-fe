@@ -14,7 +14,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        // Load assets here
         this.load.image('sky', '../../assets/scifi wallpaper.png');
         this.load.spritesheet('dude', '../../assets/astro.webp', { frameWidth: 42, frameHeight: 48 });
         this.load.spritesheet('blackhole', '../../assets/fire.png', {frameWidth: 15, frameHeight: 24});
@@ -40,21 +39,13 @@ export class GameScene extends Phaser.Scene {
         this.player = this.physics.add.sprite(50, 398, 'dude');
         this.player.setCircle(this.player.body.halfWidth, 0, this.player.body.halfHeight - this.player.body.halfWidth)
         this.physics.add.collider(this.player, this.ground);
-        this.physics.add.collider(this.player, this.blackhole1, function (this: GameScene, player, blackhole) {
+        this.physics.add.collider(this.player, this.blackhole1, this.handleBlackholeCollision, undefined, this);
+        this.physics.add.collider(this.player, this.blackhole2, this.handleBlackholeCollision, undefined, this);
+
+        this.physics.add.collider(this.player, this.spaceCraft, function (this: GameScene, player) {
             const playerSprite = player as Phaser.Physics.Arcade.Sprite;
-            const blackhole2Sprite = blackhole as Phaser.Physics.Arcade.Sprite
             playerSprite.destroy();
-            blackhole2Sprite.destroy();
-            this.explosion = this.physics.add.sprite(playerSprite.x, playerSprite.y, 'explosion');
-            this.explosion.play('explode');
-        }, undefined, this);
-        this.physics.add.collider(this.player, this.blackhole2, function (this: GameScene, player, blackhole) {
-            const playerSprite = player as Phaser.Physics.Arcade.Sprite;
-            const blackhole2Sprite = blackhole as Phaser.Physics.Arcade.Sprite
-            playerSprite.destroy();
-            blackhole2Sprite.destroy();
-            this.explosion = this.physics.add.sprite(playerSprite.x, playerSprite.y, 'explosion');
-            this.explosion.play('explode');
+            this.scene.start('win-scene');
         }, undefined, this);
 
         this.player.setCollideWorldBounds(true);
@@ -75,7 +66,7 @@ export class GameScene extends Phaser.Scene {
         this.anims.create({
             key: 'explode',
             frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 5 }),
-            frameRate: 1,
+            frameRate: 10,
             hideOnComplete: true
         });
 
@@ -114,7 +105,7 @@ export class GameScene extends Phaser.Scene {
                 this.player.setVelocity(vx, vy);
                 this.player.play('move');
                 setTimeout(() => {
-                    if (this.player) this.player.setVelocity(0, 0);
+                    this.player.setVelocity(0, 0);
                     this.player.anims.play('turn');
                 }, 1000);
                 break;
@@ -129,12 +120,16 @@ export class GameScene extends Phaser.Scene {
                 break;
         }
     }
-}
 
-// class Explosion extends Phaser.Physics.Arcade.Sprite{
-//     constructor(scene: Phaser.Scene,x: number,y: number, texture: string){
-//     super(scene,x,y,texture = 'explosive');
-//     scene.add.existing(this);
-//     this.play('explode');
-//     }
-// }
+    private handleBlackholeCollision(player:Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile , blackhole: Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
+        const playerSprite = player as Phaser.Physics.Arcade.Sprite;
+        const blackholeSprite = blackhole as Phaser.Physics.Arcade.Sprite;
+        playerSprite.destroy();
+        blackholeSprite.destroy();
+        this.explosion = this.physics.add.sprite(playerSprite.x, playerSprite.y, 'explosion');
+        this.explosion.play('explode');
+        this.explosion.on('animationcomplete', () => {
+            this.scene.start('game-over');
+        });
+    }
+}

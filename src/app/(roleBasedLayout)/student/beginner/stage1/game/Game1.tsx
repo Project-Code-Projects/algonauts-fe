@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { GameScene } from '../utils/gameScene';
 import Phaser from 'phaser';
+import { GameOverScene } from '../utils/gameOverScene';
+import { WinScene } from '../utils/winScene';
 
 interface GameProps {
     setGameScene: (gameScene: GameScene) => void;
@@ -15,11 +17,11 @@ const Game: React.FC<GameProps> = ({ setGameScene }) => {
             mode: Phaser.Scale.FIT,
             width: 800,
             height: 448,
-            scene: [GameScene],
+            scene: [GameScene, GameOverScene, WinScene],
             physics: {
                 default: 'arcade',
                 arcade: {
-                    debug: false
+                    debug: true
                 }
             },
             parent: 'game-container', // Ensure the parent is set

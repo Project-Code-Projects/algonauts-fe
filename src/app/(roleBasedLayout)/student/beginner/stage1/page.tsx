@@ -157,8 +157,6 @@ export default function App() {
     }
   }
 
-  console.log('edges', edges, 'nodes', nodes, 'linkedList', movementChain);
-
   return (
     <FlowContext.Provider
       value={{
