@@ -16,30 +16,29 @@ export const storeUserInfo = ({ token }: { token: string }) => {
   document.cookie = cookieValue;
 };
 
-export const setUserData = async (data) => {
-  if(data.type == USER_TYPE.STUDENT) {
+export const setUserData = async (data: any) => {
+  if (data.type == USER_TYPE.STUDENT) {
     const response = await fetch(`${getBaseUrl()}/student/user/${data._id}`);
     const studentData = await response.json();
     console.log(studentData.data[0]._id);
-    setToLocalStorage('student', studentData.data[0]._id);
-  } else if(data.type == USER_TYPE.INSTRUCTOR) {
+    setToLocalStorage("student", studentData.data[0]._id);
+  } else if (data.type == USER_TYPE.INSTRUCTOR) {
     const response = await fetch(`${getBaseUrl()}/instructor/user/${data._id}`);
     const instructorData = await response.json();
-    setToLocalStorage('instructor', instructorData.data[0]._id);
-  } else if(data.type == USER_TYPE.PARENT){
+    setToLocalStorage("instructor", instructorData.data[0]._id);
+  } else if (data.type == USER_TYPE.PARENT) {
     const response = await fetch(`${getBaseUrl()}/parent/user/${data._id}`);
     const parentData = await response.json();
-    setToLocalStorage('admin', parentData.data[0]._id);
-  
+    setToLocalStorage("admin", parentData.data[0]._id);
   }
-}
+};
 
 export const getUserInfo = () => {
   const authToken = getFromLocalStorage(authKey);
   if (authToken) {
     const decodedData = decodedToken(authToken);
-    console.log('decodedData');
-    console.log(decodedData);
+    // console.log('decodedData');
+    // console.log(decodedData);
     return decodedData;
   }
   return null; // Return null if no token is found

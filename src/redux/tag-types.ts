@@ -6,6 +6,7 @@ export enum tagTypes {
   section = "section",
   chapter = "chapter",
   editorLevel = "editorLevel",
+  exerciseLog = "exerciseLog",
   beginnerLevel = "beginnerLeqvel",
 }
 
@@ -17,6 +18,7 @@ export const tagTypesList = [
   tagTypes.section,
   tagTypes.chapter,
   tagTypes.editorLevel,
+  tagTypes.exerciseLog,
   tagTypes.beginnerLevel,
 ];
 
