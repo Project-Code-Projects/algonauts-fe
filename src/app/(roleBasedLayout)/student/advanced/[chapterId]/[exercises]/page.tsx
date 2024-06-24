@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { Toaster, toast } from "react-hot-toast";
@@ -288,7 +289,7 @@ const ExercisePage = ({ params }: { params: IParams }) => {
           </button>
         </div>
       </div>
-      <div className="w-1/4 ">
+      <div className="w-1/4 mt-4">
         <h1 className="text-xl font-semibold mb-4">Output</h1>
         <div className="h-[50vh] bg-white mb-4 p-4 overflow-auto shadow-md rounded-lg">
           {results.map((result, index) => (
