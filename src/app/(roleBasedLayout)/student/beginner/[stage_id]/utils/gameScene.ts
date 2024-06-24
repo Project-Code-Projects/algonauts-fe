@@ -42,8 +42,16 @@ export class GameScene extends Phaser.Scene {
         this.player.setCircle(this.player.body.halfWidth, 0, this.player.body.halfHeight - this.player.body.halfWidth);
         this.physics.add.collider(this.player, this.ground);
 
-        // Add collision between player and blackholes
+        // Add collision between player and dangers
         this.addCollisions(this.player, this.blackholes);
+
+        //Add collision between player and targets
+        
+        this.physics.add.collider(this.player, this.spacecraft, function (this: GameScene, player) {
+            const playerSprite = player as Phaser.Physics.Arcade.Sprite;
+            playerSprite.destroy();
+            this.scene.start('win-scene');
+        }, undefined, this);
 
         this.player.setCollideWorldBounds(true);
 
@@ -87,6 +95,9 @@ export class GameScene extends Phaser.Scene {
             blackholeSprite.destroy();
             this.explosion = this.physics.add.sprite(playerSprite.x, playerSprite.y, 'explosion');
             this.explosion.play('explode');
+            this.explosion.on('animationcomplete', () => {
+                this.scene.start('game-over');
+            });
         });
     }
 
@@ -119,5 +130,17 @@ export class GameScene extends Phaser.Scene {
                 });
                 break;
         }
+    }
+
+    private handleBlackholeCollision(player:Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile , blackhole: Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
+        const playerSprite = player as Phaser.Physics.Arcade.Sprite;
+        const blackholeSprite = blackhole as Phaser.Physics.Arcade.Sprite;
+        playerSprite.destroy();
+        blackholeSprite.destroy();
+        this.explosion = this.physics.add.sprite(playerSprite.x, playerSprite.y, 'explosion');
+        this.explosion.play('explode');
+        this.explosion.on('animationcomplete', () => {
+            this.scene.start('game-over');
+        });
     }
 }

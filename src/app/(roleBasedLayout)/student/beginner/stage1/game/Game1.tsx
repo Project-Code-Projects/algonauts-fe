@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { GameScene } from '../utils/gameScene';
 import Phaser from 'phaser';
+import { GameOverScene } from '../utils/gameOverScene';
+import { WinScene } from '../utils/winScene';
 
 interface GameProps {
     setGameScene: (gameScene: GameScene) => void;
@@ -15,11 +17,11 @@ const Game: React.FC<GameProps> = ({ setGameScene, gameData }) => {
             type: Phaser.AUTO,
             width: 800,
             height: 448,
-            scene: [new GameScene(gameData)], // Pass gameData to GameScene
+            scene: [new GameScene(gameData),GameOverScene, WinScene], // Pass gameData to GameScene
             physics: {
                 default: 'arcade',
                 arcade: {
-                    debug: false,
+                    debug: true,
                 },
             },
             parent: 'game-container',
