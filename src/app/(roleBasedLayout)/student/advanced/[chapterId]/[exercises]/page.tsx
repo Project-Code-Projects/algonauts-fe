@@ -1,11 +1,13 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import Editor from "@monaco-editor/react";
 import { useGetEditorLevelByExerciseIdQuery } from "@/redux/api/editorLevelApi";
 import ProblemCard from "@/components/codeEditor/ProblemCard";
 import TestCaseTabs from "@/components/codeEditor/TestCaseTabs";
-import usePreventConsole from "@/hooks/usePreventConsole";
+import usePreventCheat from "@/hooks/usePreventCheat";
+import { getUserInfo } from "@/services/auth.service";
+import { useAddExerciseLogMutation } from "@/redux/api/exerciseLogApi";
 
 type IParams = {
   exercises: string;
@@ -24,18 +26,64 @@ const ExercisePage = ({ params }: { params: IParams }) => {
     error,
     isLoading,
   } = useGetEditorLevelByExerciseIdQuery(exerciseId);
+  const [
+    addExerciseLog,
+    {
+      isLoading: addExerciseLogLoading,
+      isSuccess: addExerciseLogSuccess,
+      isError: addExerciseLogError,
+    },
+  ] = useAddExerciseLogMutation();
 
   const [code, setCode] = useState<string>("");
   const [results, setResults] = useState<string[]>([]);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [endTime, setEndTime] = useState<number | null>(null);
+  const [completionTime, setCompletionTime] = useState<number | null>(null);
+  const [status, setStatus] = useState<boolean | null>(false);
+  const logCreated = useRef(false);
 
-  const switchTabCount = usePreventConsole();
-  console.log("I am tab count", switchTabCount);
+  const { studentId } = getUserInfo() as any;
+
+  useEffect(() => {
+    const isAllTestCassesPassed =
+      results.length > 0 &&
+      results.every((result) => result.includes("passed"));
+    // console.log(isAllTestCassesPassed);
+    setIsButtonDisabled(!isAllTestCassesPassed);
+    // console.log(isAllTestCassesPassed);
+  }, [results]);
+
+  const switchTabCount = usePreventCheat();
+  // console.log("I am tab count", switchTabCount);
 
   useEffect(() => {
     if (EditorLevelDataFromBE?.data[0]) {
       setCode(EditorLevelDataFromBE.data[0].functionPlaceholder);
     }
   }, [EditorLevelDataFromBE]);
+
+  useEffect(() => {
+    if (logCreated.current) return;
+
+    const start = Date.now();
+    setStartTime(start);
+    const currentEndTime = Date.now();
+    const timeSpent = startTime ? (currentEndTime - startTime) / 1000 / 60 : 0;
+    const exerciseLogData = {
+      exerciseId,
+      studentId,
+      startTime: start,
+      endTime: currentEndTime,
+      completionTime: timeSpent,
+      switchTabCount,
+      status: false,
+    };
+    addExerciseLog(exerciseLogData);
+
+    logCreated.current = true;
+  }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -124,8 +172,53 @@ const ExercisePage = ({ params }: { params: IParams }) => {
     }
   };
 
+  const handleSubmit = async () => {
+    const currentEndTime = Date.now();
+    setEndTime(currentEndTime);
+
+    if (startTime) {
+      const timeSpent = (currentEndTime - startTime) / 1000 / 60; // duration in minutes
+      console.log(`Time spent solving: ${timeSpent.toFixed(2)} minutes`);
+      setCompletionTime(timeSpent);
+      setStatus(true);
+
+      const exerciseLogData = {
+        exerciseId,
+        studentId,
+        startTime,
+        endTime: currentEndTime,
+        completionTime: timeSpent,
+        switchTabCount,
+        status: true,
+      };
+
+      try {
+        await addExerciseLog(exerciseLogData);
+        if (addExerciseLogSuccess) {
+          toast.success("Successfully submitted");
+        }
+      } catch (error) {
+        toast.error("Failed to log exercise");
+      }
+    } else {
+      toast.error("Start time is not defined");
+    }
+  };
+
   const { title, description, examples, constraints, followUp } =
     problemData.problem || {};
+
+  // const dummyData = {
+  //   exerciseId,
+  //   studentId,
+  //   startTime,
+  //   endTime,
+  //   completionTime,
+  //   switchTabCount,
+  //   status,
+  // };
+
+  // console.log("I am dummyData", dummyData);
 
   return (
     <div className="flex overflow-hidden h-[92vh]">
@@ -158,29 +251,42 @@ const ExercisePage = ({ params }: { params: IParams }) => {
             contextmenu: false, // Disable right-click menu
             copyWithSyntaxHighlighting: false, // Disable copy with syntax highlighting
           }}
-          onMount={(editor, monaco) => {
-            // Disable copy-paste in the editor
-            editor.addCommand(
-              monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyC,
-              () => {}
-            );
-            editor.addCommand(
-              monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV,
-              () => {}
-            );
-            editor.addCommand(
-              monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyX,
-              () => {}
-            );
-          }}
+          // onMount={(editor, monaco) => {
+          //   // Disable copy-paste in the editor
+          //   editor.addCommand(
+          //     monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyC,
+          //     () => {}
+          //   );
+          //   editor.addCommand(
+          //     monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyV,
+          //     () => {}
+          //   );
+          //   editor.addCommand(
+          //     monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyX,
+          //     () => {}
+          //   );
+          // }}
         />
+        <div className="flex items-center justify-between">
+          <button
+            onClick={runCode}
+            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Run Code
+          </button>
 
-        <button
-          onClick={runCode}
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Submit
-        </button>
+          <button
+            onClick={handleSubmit}
+            disabled={isButtonDisabled}
+            className={`mt-4 mr-8 px-4 py-2 rounded ${
+              isButtonDisabled
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-blue-500 text-white hover:bg-blue-700"
+            }`}
+          >
+            Submit
+          </button>
+        </div>
       </div>
       <div className="w-1/4 ">
         <h1 className="text-xl font-semibold mb-4">Output</h1>

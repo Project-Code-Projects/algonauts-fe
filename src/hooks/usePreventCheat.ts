@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const usePreventConsole = () => {
+const usePreventCheat = () => {
   const switchTabCountRef = useRef(0);
   const [switchTabCount, setSwitchTabCount] = useState(0);
 
@@ -9,10 +9,10 @@ const usePreventConsole = () => {
       if (document.hidden) {
         switchTabCountRef.current += 1;
         setSwitchTabCount(switchTabCountRef.current);
-        console.log(
-          "User attempted to switch tabs.",
-          switchTabCountRef.current
-        );
+        // console.log(
+        //   "User attempted to switch tabs.",
+        //   switchTabCountRef.current
+        // );
       }
     };
 
@@ -49,4 +49,4 @@ const usePreventConsole = () => {
   return switchTabCount;
 };
 
-export default usePreventConsole;
+export default usePreventCheat;
