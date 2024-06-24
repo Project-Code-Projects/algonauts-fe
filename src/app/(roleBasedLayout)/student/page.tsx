@@ -21,6 +21,8 @@ import {
 } from "@/redux/api/helpRequestApi";
 import HelpRequestStudentComponent from "@/components/helpRequest/HelpRequestStudentComponent";
 import NotificationComponent from "@/components/NotificationComponent";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SocialPage from "@/components/social/social";
 
 type HelpFormValues = {
   question: string;
@@ -148,11 +150,27 @@ const StudentPage = () => {
         </div>
       </div>
 
+      {/* Tabs component */}
+      <Tabs defaultValue="social" className="mt-2 w-full">
+        <TabsList>
+          <TabsTrigger value="social">Social</TabsTrigger>
+          <TabsTrigger value="help-request">Help Request</TabsTrigger>
+        </TabsList>
+        <TabsContent value="social">
+<SocialPage />
+        </TabsContent>
+        <TabsContent value="help-request">
+          {helpRequestData.data && helpRequestData.data.length > 0 && (
+            <HelpRequestStudentComponent data={helpRequestData.data} />
+          )}
+        </TabsContent>
+      </Tabs>
+
       {/* Help request component */}
 
-      {helpRequestData.data && helpRequestData.data.length > 0 && (
+      {/* {helpRequestData.data && helpRequestData.data.length > 0 && (
         <HelpRequestStudentComponent data={helpRequestData.data} />
-      )}
+      )} */}
 
       {/* <HelpRequestStudentComponent data={helpRequestData} /> */}
 
