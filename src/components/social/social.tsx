@@ -4,6 +4,8 @@ import { useState, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import Post from './post';
+import { useGetPostQuery, useCreatePostMutation } from '@/redux/api/postApi';
+import { getUserInfo } from '@/services/auth.service';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
@@ -13,7 +15,7 @@ const PostForm = ({ addPost }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (content) {
-      addPost({ content, likes: 0, comments: [] });
+      addPost({ content });
       setContent('');
     }
   };
@@ -37,30 +39,24 @@ const PostForm = ({ addPost }) => {
 };
 
 const Social = () => {
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      content: '<p>This is the first post. Welcome to our platform!</p>',
-      code: `console.log('Welcome!');`,
-      likes: 10,
-      comments: [
-        { text: '<p>Great post!</p>', code: '' },
-        { text: '<p>Very informative.</p>', code: '' },
-      ],
-    },
-    {
-      id: 2,
-      content: '<p>Hello, world!</p>',
-      code: `console.log('Hello, world!');`,
-      likes: 20,
-      comments: [
-        { text: '<p>Nice code!</p>', code: `console.log('Nice!');` },
-        { text: '<p>I learned something new.</p>', code: '' },
-      ],
-    },
-  ]);
+  const {
+    data: posts,
+    isLoading: postLoading,
+    isError: postError,
+  } = useGetPostQuery({});
 
+
+  const userInfo = getUserInfo();
+  const [createPost] = useCreatePostMutation();
   const [visibleComments, setVisibleComments] = useState({});
+
+  if (postError) {
+    return <div>Error...</div>;
+  }
+
+  if (postLoading) {
+    return <div>Loading...</div>;
+  }
 
   const toggleCommentsVisibility = (postId) => {
     setVisibleComments(prevState => ({
@@ -70,25 +66,22 @@ const Social = () => {
   };
 
   const addComment = (postId, comment) => {
-    setPosts(posts.map(post => {
-      if (post.id === postId) {
-        return { ...post, comments: [...post.comments, comment] };
-      }
-      return post;
-    }));
+    // Add your comment creation logic here
   };
 
-  const addPost = (newPost) => {
-    setPosts(prevPosts => [
-      ...prevPosts,
-      { ...newPost, id: prevPosts.length + 1 }
-    ]);
+  const addPost = async (newPost) => {
+    console.log('newPost: ', newPost);
+    try {
+      await createPost({...newPost, authorId: userInfo?._id}).unwrap();
+    } catch (error) {
+      console.error('Failed to create post: ', error);
+    }
   };
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
       <PostForm addPost={addPost} />
-      {posts.map((post) => (
+      {posts?.data.map((post) => (
         <Post
           key={post.id}
           post={post}
