@@ -1,32 +1,38 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaThumbsUp, FaComment } from 'react-icons/fa';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import dynamic from 'next/dynamic';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github.css';
 import 'react-quill/dist/quill.snow.css';
+
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const Post = ({ post, toggleCommentsVisibility, visibleComments, addComment }) => {
   const [commentContent, setCommentContent] = useState('');
 
+  useEffect(() => {
+    document.querySelectorAll('pre code').forEach((block) => {
+      hljs.highlightElement(block);
+    });
+  }, [post.content, post.comments]);
+
   const handleCommentSubmit = (e) => {
     e.preventDefault();
-    addComment(post.id, { text: commentContent });
+    addComment(post.id, { content: commentContent });
     setCommentContent('');
   };
 
   return (
     <div key={post.id} className="mb-8 p-6 bg-white shadow-lg rounded-lg">
-      <div className="text-gray-800 text-lg" dangerouslySetInnerHTML={{ __html: post.content }}></div>
+      <div className="text-gray-800 text-lg ql-editor" dangerouslySetInnerHTML={{ __html: post.content }}></div>
       <div className="mt-4 flex justify-between items-center">
         <span className="text-gray-600 flex items-center">
           <FaThumbsUp className="mr-2" />
           {post.likes} Likes
         </span>
-
         <button
           onClick={() => toggleCommentsVisibility(post.id)}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex items-center focus:outline-none focus:shadow-outline"
