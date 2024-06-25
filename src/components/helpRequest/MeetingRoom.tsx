@@ -22,8 +22,8 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
 
   useEffect(() => {
     const newPeer = new Peer(meetingPeerId, {
-      host: 'localhost', 
-      port: 5000, 
+      host: process.env.NEXT_PUBLIC_HOST, 
+      port: process.env.NEXT_PUBLIC_PORT, 
       path: '/peerjs/myapp',
     });
 
