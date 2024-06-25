@@ -12,7 +12,14 @@ export const parentApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.student, tagTypes.user],
     }),
+    getStudentStats: build.query({
+      query: (studentId) => ({
+        url: `${PARENT_URL}/exercise-statistics/${studentId}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.student, tagTypes.user],
+    }),
   }),
 });
 
-export const { useGetParentbyUserIdQuery } = parentApi;
+export const { useGetParentbyUserIdQuery, useGetStudentStatsQuery } = parentApi;

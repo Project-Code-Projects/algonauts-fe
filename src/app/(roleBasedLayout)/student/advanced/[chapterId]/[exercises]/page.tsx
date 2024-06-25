@@ -80,6 +80,7 @@ const ExercisePage = ({ params }: { params: IParams }) => {
       completionTime: timeSpent,
       switchTabCount,
       status: false,
+      codeSnippet: "attempt",
     };
     addExerciseLog(exerciseLogData);
 
@@ -191,7 +192,9 @@ const ExercisePage = ({ params }: { params: IParams }) => {
         completionTime: timeSpent,
         switchTabCount,
         status: true,
+        codeSnippet: code,
       };
+      console.log(exerciseLogData);
 
       try {
         await addExerciseLog(exerciseLogData);

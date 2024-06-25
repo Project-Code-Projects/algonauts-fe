@@ -35,9 +35,9 @@ const Navbar = () => {
       </div>
       <div className="flex items-center space-x-4">
         <div className="hidden md:flex space-x-4">
-          <div>
-            <button className="text-gray-600">Instructors</button>
-          </div>
+          <Link href="/instructor" className="text-gray-600">
+            Instructor
+          </Link>
           <Link href="/parent" className="text-gray-600">
             Parents
           </Link>

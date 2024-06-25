@@ -12,7 +12,25 @@ export const instructorApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.student, tagTypes.user],
     }),
+    getClassStats: build.query({
+      query: () => ({
+        url: `${INSTRUCTOR_URL}/exercise-statistics`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.student, tagTypes.user, tagTypes.stats],
+    }),
+    getStudentStats: build.query({
+      query: (studentId) => ({
+        url: `${INSTRUCTOR_URL}/exercise-statistics/${studentId}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.student, tagTypes.user, tagTypes.stats],
+    }),
   }),
 });
 
-export const { useGetInstructorApiQuery } = instructorApi;
+export const {
+  useGetInstructorApiQuery,
+  useGetClassStatsQuery,
+  useGetStudentStatsQuery,
+} = instructorApi;

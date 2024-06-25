@@ -52,10 +52,7 @@ const InstructorProfilePage = () => {
       <h1 className="text-2xl font-bold mb-8">
         Instructor userId: {instructorData._id}{" "}
       </h1>
-
-      {helpRequestData.data && helpRequestData.data.length > 0 && (
-        <HelpRequestInstructorComponent data={helpRequestData.data} />
-      )}
+      <Link href={"/instructor/dataAnalysis"}>Data Analysis</Link>
 
       <Tabs defaultValue="social" className="mt-2 w-full">
         <TabsList>
