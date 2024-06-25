@@ -51,40 +51,35 @@ const HelpRequestStudentComponent = ({ data }: { data: Question[] }) => {
               <strong>Updated At:</strong>{" "}
               {new Date(item.updatedAt).toLocaleString()}
             </p>
-            {item.notes && (
-              <button
-                onClick={() => openModal(item.notes)}
-                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-              >
-                View Notes
-              </button>
-            )}
-            {item.status === "accepted" && (
-              <a
-                href={`/meeting/${item._id}`}
-                className="mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-              >
-                Join Meeting
-              </a>
-            )}
+            <div className="mt-4 flex flex-col space-y-2">
+              {item.notes && (
+                <button
+                  onClick={() => openModal(item.notes)}
+                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                >
+                  View Notes
+                </button>
+              )}
+              {item.status === "accepted" && (
+                <a
+                  href={`/meeting/${item._id}`}
+                  className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+                >
+                  Join Meeting
+                </a>
+              )}
+            </div>
           </li>
         ))}
       </ul>
 
-      {/* modal to show notes */}
-
-      <Dialog
-        open={showModal}
-        onOpenChange={() => setShowModal(!showModal)}
-      >
+      {/* Modal to show notes */}
+      <Dialog open={showModal} onOpenChange={() => setShowModal(!showModal)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="text-xl font-semibold mb-2">
               Help Request Notes
             </DialogTitle>
-            {/* <DialogDescription className="mb-4">
-              Ask a question or request help from your instructor.
-            </DialogDescription> */}
           </DialogHeader>
           <div dangerouslySetInnerHTML={{ __html: modalContent }} />
         </DialogContent>

@@ -42,27 +42,29 @@ const HelpRequestInstructorComponent = ({ data }: { data: Question[] }) => {
               <strong>Updated At:</strong>{" "}
               {new Date(item.updatedAt).toLocaleString()}
             </p>
-            {item.status === "pending" && (
-              <button
-                onClick={() =>
-                  updateHelpRequest({
-                    id: item._id,
-                    data: { status: "accepted", instructorId: instructorId },
-                  })
-                }
-                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-              >
-                Accept
-              </button>
-            )}
-            {item.status === "accepted" && (
-              <a
-                href={`/meeting/${item._id}`}
-                className="mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-              >
-                Join Meeting
-              </a>
-            )}
+            <div className="mt-4 flex flex-col space-y-2">
+              {item.status === "pending" && (
+                <button
+                  onClick={() =>
+                    updateHelpRequest({
+                      id: item._id,
+                      data: { status: "accepted", instructorId: instructorId },
+                    })
+                  }
+                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                >
+                  Accept
+                </button>
+              )}
+              {item.status === "accepted" && (
+                <a
+                  href={`/meeting/${item._id}`}
+                  className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+                >
+                  Join Meeting
+                </a>
+              )}
+            </div>
           </li>
         ))}
       </ul>
