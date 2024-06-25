@@ -7,7 +7,6 @@ import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import 'react-quill/dist/quill.snow.css';
 
-
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const Post = ({ post, toggleCommentsVisibility, visibleComments, addComment }) => {
@@ -27,6 +26,10 @@ const Post = ({ post, toggleCommentsVisibility, visibleComments, addComment }) =
 
   return (
     <div key={post.id} className="mb-8 p-6 bg-white shadow-lg rounded-lg">
+      <div className="flex justify-between items-center mb-4">
+        <div className="text-gray-700 font-bold">{post.authorId.name}</div>
+        <span className="text-gray-500 text-sm">{new Date(post.createdAt).toLocaleDateString()}</span>
+      </div>
       <div className="text-gray-800 text-lg ql-editor" dangerouslySetInnerHTML={{ __html: post.content }}></div>
       <div className="mt-4 flex justify-between items-center">
         <span className="text-gray-600 flex items-center">
@@ -45,6 +48,10 @@ const Post = ({ post, toggleCommentsVisibility, visibleComments, addComment }) =
         <ul className="mt-4">
           {post.comments.map((comment, idx) => (
             <li key={idx} className="mt-2 text-gray-600 bg-gray-100 p-2 rounded-lg">
+              <div className="flex justify-between items-center mb-2">
+                <div className="font-bold">{comment.userId.name}</div>
+                <span className="text-gray-500 text-sm">{new Date(comment.createdAt).toLocaleDateString()}</span>
+              </div>
               <div dangerouslySetInnerHTML={{ __html: comment.content }}></div>
             </li>
           ))}
