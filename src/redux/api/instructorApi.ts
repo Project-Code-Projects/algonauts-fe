@@ -26,6 +26,13 @@ export const instructorApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.student, tagTypes.user, tagTypes.stats],
     }),
+    getStudentCodeSnippet: build.query({
+      query: (studentId) => ({
+        url: `${INSTRUCTOR_URL}/student-code-snippet/${studentId}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.student, tagTypes.user, tagTypes.stats],
+    }),
   }),
 });
 
@@ -33,4 +40,5 @@ export const {
   useGetInstructorApiQuery,
   useGetClassStatsQuery,
   useGetStudentStatsQuery,
+  useGetStudentCodeSnippetQuery,
 } = instructorApi;
