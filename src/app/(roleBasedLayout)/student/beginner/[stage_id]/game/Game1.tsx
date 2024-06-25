@@ -40,7 +40,7 @@ const Game: React.FC<GameProps> = ({ setGameScene, gameData }) => {
         };
     }, [gameData, setGameScene]);
 
-    return <div id="game-container" style={{ width: '100%', height: '100%' }} />;
+    return <div id="game-container" style={{ width: '100%', height: '100%', maxHeight: '468px' }} />;
 };
 
 export default Game;

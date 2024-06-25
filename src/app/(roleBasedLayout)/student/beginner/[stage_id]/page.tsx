@@ -24,6 +24,7 @@ import { traverseMovementChain } from "./utils/traverseMovementChain";
 import './index.css';
 import { useGetBeginnerLevelByLevelIdQuery } from "@/redux/api/beginnerLevelApi";
 import { GameScene } from "./utils/gameScene";
+import { log } from "console";
 
 // Mock Data
 // const gameData = {
@@ -46,9 +47,9 @@ export default function App({ params }: Params) {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const { getNode } = useReactFlow();
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [code, setCode] = useState('');
 
   const { data: gameData, isLoading: loadingLevel, isError: loadingLevelError } = useGetBeginnerLevelByLevelIdQuery(levelId);
-  console.log(gameData);
 
   // useCallback for memoization
   const onConnect: OnConnect = useCallback(
@@ -84,9 +85,9 @@ export default function App({ params }: Params) {
   const [movementChain, setMovementChain] = useState(chain());
   const [gameScene, setGameScene] = useState<GameScene | null>(null);
 
-    // Early return for loading and error states
-    if (loadingLevelError) return <div>Error...</div>;
-    if (loadingLevel) return <div>Loading...</div>;
+  // Early return for loading and error states
+  if (loadingLevelError) return <div>Error...</div>;
+  if (loadingLevel) return <div>Loading...</div>;
 
   // Function to add a new node
   const addNode = (dir: string, parentId?: string) => {
@@ -101,8 +102,9 @@ export default function App({ params }: Params) {
     setNodes((nds) => [...nds, newNode as Node]);
   };
 
-
-  function moveSprite() {
+  async function moveSprite() {
+    const generatedCode = await generateCode('start', nodes, edges);
+    setCode(generatedCode);
     let startEdge = edges.find(edge => edge.source == 'start');
     let index = edges.findIndex(edge => edge.source == 'start');
     let startNode = getNode(startEdge?.target as string);
@@ -194,23 +196,27 @@ export default function App({ params }: Params) {
     return nodes.find(node => node.id === id);
   }
 
-  function generateCode(startNodeId, nodes, edges) {
+  async function generateCode(startNodeId, nodes, edges) {
     let code = 'function game() {\n';
     let visited = new Set();
-  
+
     function traverse(nodeId, indent = '  ') {
       if (visited.has(nodeId)) return;
       visited.add(nodeId);
-  
+
       const node = fetchNodeById(nodeId, nodes);
       if (!node) return;
-  
+
       if (node.type === 'textUpdater' && node.data.dir === 'move') {
-        code += `${indent}move(${node.data.times}); // Node "${node.id}" moves ${node.data.times} time${node.data.times > 1 ? 's' : ''}\n`;
+        code += `${indent}move(${node.data.times}); // Player moves ${node.data.times} time${node.data.times > 1 ? 's' : ''}\n`;
+      } else if (node.type === 'textUpdater' && node.data.dir === 'turn') {
+        code += `${indent}turn(${node.data.times}); // Player turns ${node.data.times} time${node.data.times > 1 ? 's' : ''}\n`;
       }
-  
+
+
+
       if (node.type === 'forNode') {
-        code += `${indent}for (let i = 0; i < ${node.data.times}; i++) { // Node "${node.id}" (forNode) iterates ${node.data.times} times\n`;
+        code += `${indent}for (let i = 0; i < ${node.data.times}; i++) { // For loop iterates ${node.data.times} times\n`;
         const childrenEdges = edges.filter(edge => edge.source === nodeId);
         childrenEdges.forEach(edge => {
           traverse(edge.target, indent + '  ');
@@ -223,17 +229,18 @@ export default function App({ params }: Params) {
         }
       }
     }
-  
+
     traverse(startNodeId);
     code += '}\n';
     return code;
   }
 
+  console.log(code);
   // Rendering the component
   return (
     <FlowContext.Provider value={{ addNode, nodes }}>
       <div className="flex w-full h-screen overflow-y-scroll bg-[#1c1b1a]">
-        <div className="relative w-[50%]">
+        <div className="relative w-[70%]">
           <div className='editor-container'>
             <div className='toolbar'>
               <div className="absolute flex justify-between w-full z-20">
@@ -262,7 +269,12 @@ export default function App({ params }: Params) {
             <Controls />
           </ReactFlow>
         </div>
-        <Game setGameScene={setGameScene} gameData={gameData.data} />
+        <div className="flex flex-col">
+          <Game setGameScene={setGameScene} gameData={gameData.data} />
+          <div className="border-gray-400 border-2 bg-gray-300 min-h-40 h-auto p-4 rounded-lg font-mono text-gray-700">
+            {code}
+          </div>
+        </div>
       </div>
     </FlowContext.Provider>
   );
