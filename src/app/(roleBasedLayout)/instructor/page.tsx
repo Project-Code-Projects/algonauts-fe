@@ -49,11 +49,11 @@ const InstructorProfilePage = () => {
       <h1 className="text-2xl font-bold mb-8">
         Instructor userId: {instructorData._id}{" "}
       </h1>
+      <Link href={"/instructor/dataAnalysis"}>Data Analysis</Link>
 
       {helpRequestData.data && helpRequestData.data.length > 0 && (
         <HelpRequestInstructorComponent data={helpRequestData.data} />
       )}
-
     </div>
   );
 };
