@@ -21,7 +21,7 @@ const Game: React.FC<GameProps> = ({ setGameScene, gameData }) => {
             physics: {
                 default: 'arcade',
                 arcade: {
-                    debug: true,
+                    debug: false,
                 },
             },
             parent: 'game-container',
