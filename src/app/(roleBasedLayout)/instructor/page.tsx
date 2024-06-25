@@ -7,6 +7,9 @@ import { useGetInstructorApiQuery } from "@/redux/api/instructorApi";
 import { useGetStudentByParentIdQuery } from "@/redux/api/studentApi";
 import { getUserInfo } from "@/services/auth.service";
 import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SocialPage from "@/components/social/social";
+
 
 const InstructorProfilePage = () => {
   const userInfo = getUserInfo();
@@ -54,6 +57,20 @@ const InstructorProfilePage = () => {
         <HelpRequestInstructorComponent data={helpRequestData.data} />
       )}
 
+      <Tabs defaultValue="social" className="mt-2 w-full">
+        <TabsList>
+          <TabsTrigger value="social">Social</TabsTrigger>
+          <TabsTrigger value="help-request">Help Request</TabsTrigger>
+        </TabsList>
+        <TabsContent value="social">
+          <SocialPage />
+        </TabsContent>
+        <TabsContent value="help-request">
+          {helpRequestData.data && helpRequestData.data.length > 0 && (
+            <HelpRequestInstructorComponent data={helpRequestData.data} />
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

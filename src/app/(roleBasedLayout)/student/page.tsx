@@ -157,7 +157,7 @@ const StudentPage = () => {
           <TabsTrigger value="help-request">Help Request</TabsTrigger>
         </TabsList>
         <TabsContent value="social">
-<SocialPage />
+          <SocialPage />
         </TabsContent>
         <TabsContent value="help-request">
           {helpRequestData.data && helpRequestData.data.length > 0 && (
