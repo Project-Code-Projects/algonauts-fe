@@ -1,4 +1,6 @@
-import Phaser from 'phaser';
+// import Phaser from 'phaser';
+const Phaser = require('phaser');
+
 
 export class GameScene extends Phaser.Scene {
     private player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
