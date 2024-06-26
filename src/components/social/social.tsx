@@ -10,9 +10,12 @@ import { getUserInfo } from "@/services/auth.service";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
+// @ts-ignore
 const PostForm = ({ addPost }) => {
   const [content, setContent] = useState("");
 
+// @ts-ignore
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     if (content) {
@@ -35,7 +38,7 @@ const PostForm = ({ addPost }) => {
     >
       <ReactQuill
         value={content}
-        heme="snow"
+        theme="snow"
         onChange={setContent}
         modules={modules}
       />
@@ -68,13 +71,17 @@ const Social = () => {
   if (postLoading) {
     return <div>Loading...</div>;
   }
+// @ts-ignore
 
   const toggleCommentsVisibility = (postId) => {
     setVisibleComments((prevState) => ({
       ...prevState,
+// @ts-ignore
+
       [postId]: !prevState[postId],
     }));
   };
+// @ts-ignore
 
   const addComment = async (postId, comment) => {
     try {
@@ -90,6 +97,9 @@ const Social = () => {
     }
   };
 
+
+// @ts-ignore
+
   const addPost = async (newPost) => {
     console.log("newPost: ", newPost);
     try {
@@ -102,7 +112,8 @@ const Social = () => {
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
       <PostForm addPost={addPost} />
-      {posts?.data.map((post) => (
+      
+      {posts?.data.map((post:any) => (
         <Post
           key={post.id}
           post={post}

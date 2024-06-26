@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { GameScene } from '../utils/gameScene';
-// import Phaser from 'phaser';
-const Phaser = require('phaser');
+import * as Phaser from 'phaser';
 import { GameOverScene } from '../utils/gameOverScene';
 import { WinScene } from '../utils/winScene';
 

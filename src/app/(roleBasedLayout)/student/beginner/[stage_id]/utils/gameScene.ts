@@ -1,5 +1,4 @@
-// import Phaser from 'phaser';
-const Phaser = require('phaser');
+import * as Phaser from 'phaser';
 
 
 export class GameScene extends Phaser.Scene {
@@ -91,7 +90,8 @@ export class GameScene extends Phaser.Scene {
     }
 
     addCollisions(player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody, blackholeGroup: Phaser.Physics.Arcade.StaticGroup) {
-        this.physics.add.collider(player, blackholeGroup, (playerSprite, blackhole) => {
+        this.physics.add.collider(player, blackholeGroup, (player, blackhole) => {
+            const playerSprite = player as Phaser.Physics.Arcade.Sprite;
             const blackholeSprite = blackhole as Phaser.Physics.Arcade.Sprite;
             playerSprite.destroy();
             blackholeSprite.destroy();

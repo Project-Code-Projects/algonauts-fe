@@ -12,7 +12,7 @@ interface MeetingRoomProps {
 const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetingRemotePeerId }) => {
   const [peerId, setPeerId] = useState<string | null>(null);
   const [peer, setPeer] = useState<Peer | null>(null);
-  const [call, setCall] = useState<Peer.MediaConnection | null>(null);
+  const [call, setCall] = useState<any | null>(null);
   const [isCallActive, setIsCallActive] = useState<boolean>(false);
   const [isAudioMuted, setIsAudioMuted] = useState<boolean>(false);
   const [isVideoOff, setIsVideoOff] = useState<boolean>(false);
@@ -23,7 +23,7 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
   useEffect(() => {
     const newPeer = new Peer(meetingPeerId, {
       host: process.env.NEXT_PUBLIC_HOST, 
-      port: process.env.NEXT_PUBLIC_PORT, 
+      port: Number(process.env.NEXT_PUBLIC_PORT), 
       path: '/peerjs/myapp',
     });
 

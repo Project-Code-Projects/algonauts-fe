@@ -25,7 +25,7 @@ require("highlight.js");
 
 const modules = {
   syntax: {
-    highlight: (text) => hljs.highlightAuto(text).value,
+    highlight: (text : string) => hljs.highlightAuto(text).value,
   },
   toolbar: [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -69,10 +69,10 @@ const MeetingRoomPage = ({ params }: Params) => {
 
   useEffect(() => {
     if (helpRequest) {
-      if (userInfo.type === USER_TYPE.STUDENT) {
+      if (userInfo?.type === USER_TYPE.STUDENT) {
         setPeerId(helpRequest.studentId);
         setRemotePeerId(helpRequest.instructorId);
-      } else if (userInfo.type === USER_TYPE.INSTRUCTOR) {
+      } else if (userInfo?.type === USER_TYPE.INSTRUCTOR) {
         setPeerId(helpRequest.instructorId);
         setRemotePeerId(helpRequest.studentId);
       }

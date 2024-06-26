@@ -6,6 +6,7 @@ export interface DecodedToken {
   type: string;
   iat: number;
   exp: number;
+  instructorId:string;
 }
 
 export const decodedToken = (token: string): DecodedToken => {

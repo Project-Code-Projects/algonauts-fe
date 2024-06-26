@@ -1,5 +1,4 @@
-// import Phaser from 'phaser';
-const Phaser = require('phaser');
+import * as Phaser from 'phaser';
 
 
 export class GameOverScene extends Phaser.Scene {

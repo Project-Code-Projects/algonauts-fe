@@ -10,6 +10,7 @@ export enum tagTypes {
   beginnerLevel = "beginnerLeqvel",
   post = "post",
   stats = "stats",
+  comment = "comment"
 }
 
 export const tagTypesList = [
@@ -24,6 +25,7 @@ export const tagTypesList = [
   tagTypes.beginnerLevel,
   tagTypes.post,
   tagTypes.stats,
+  tagTypes.comment
 ];
 
 /*

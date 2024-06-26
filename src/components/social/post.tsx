@@ -9,16 +9,17 @@ import 'react-quill/dist/quill.snow.css';
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-const Post = ({ post, toggleCommentsVisibility, visibleComments, addComment }) => {
+const Post = ({ post, toggleCommentsVisibility, visibleComments, addComment }:any) => {
   const [commentContent, setCommentContent] = useState('');
 
   useEffect(() => {
     document.querySelectorAll('pre code').forEach((block) => {
+      // @ts-ignore
       hljs.highlightElement(block);
     });
   }, [post.content, post.comments]);
 
-  const handleCommentSubmit = (e) => {
+  const handleCommentSubmit = (e:any) => {
     e.preventDefault();
     addComment(post.id, { content: commentContent });
     setCommentContent('');
@@ -46,7 +47,7 @@ const Post = ({ post, toggleCommentsVisibility, visibleComments, addComment }) =
       </div>
       {visibleComments[post.id] && (
         <ul className="mt-4">
-          {post.comments.map((comment, idx) => (
+          {post.comments.map((comment:any, idx:any) => (
             <li key={idx} className="mt-2 text-gray-600 bg-gray-100 p-2 rounded-lg">
               <div className="flex justify-between items-center mb-2">
                 <div className="font-bold">{comment.userId.name}</div>

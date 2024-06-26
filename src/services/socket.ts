@@ -4,6 +4,7 @@ import { store } from '@/redux/store';
 
 // const socket = io('http://localhost:5000');
 console.log('Connecting to socket server');
+// @ts-ignore
 const socket: Socket = io(process.env.NEXT_PUBLIC_SOCKETS_URL);;  // Replace with your server URL
 
 

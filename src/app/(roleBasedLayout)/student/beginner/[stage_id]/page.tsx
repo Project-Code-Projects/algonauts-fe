@@ -253,15 +253,15 @@ export default function App({ params }: Params) {
 
   // console.log('edges', edges, 'nodes', nodes, 'linkedList', movementChain);
 
-  function fetchNodeById(id, nodes) {
+  function fetchNodeById(id : string, nodes : Node[]) {
     return nodes.find((node) => node.id === id);
   }
 
-  async function generateCode(startNodeId, nodes, edges) {
+  async function generateCode(startNodeId: string, nodes: Node[], edges: Edge[]) {
     let code = "function game() {\n";
     let visited = new Set();
 
-    function traverse(nodeId, indent = "  ") {
+    function traverse(nodeId: string, indent = "  ") {
       if (visited.has(nodeId)) return;
       visited.add(nodeId);
 
