@@ -70,7 +70,7 @@ const BeginneLevelPage = () => {
             <div className="flex justify-start p-2">
                 {beginnerLevelData?.data?.map((data: any) => {
                     return (
-                        <div className="flex flex-col items-center mr-2">
+                        <div className="flex flex-col items-center mr-2" key={data._id}>
                             <div className="">
                                 <div className="flex flex-col items-center"><div className="text-white">Level: {data?.level}</div></div>
                             </div>
