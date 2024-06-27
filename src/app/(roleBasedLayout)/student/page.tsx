@@ -148,7 +148,7 @@ const StudentPage = () => {
 
       <div className="my-12 flex flex-col justify-center items-center">
         <ExerciseProgressPieChart
-          totalExercises={studentProgressData.totalExercises}
+          totalExercises={studentProgressData?.totalExercises}
           numberOfExercisesDone={studentProgressData.numberOfExercisesDone}
         />
         <Link href={"/student/syllabus"}>
