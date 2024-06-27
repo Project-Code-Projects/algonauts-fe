@@ -20,6 +20,11 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
 
+  console.log('local')
+  console.log(meetingPeerId);
+  console.log('remote')
+  console.log(meetingRemotePeerId);
+
   useEffect(() => {
     const newPeer = new Peer(meetingPeerId, {
       host: process.env.NEXT_PUBLIC_HOST, 
