@@ -30,6 +30,7 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
       host: process.env.NEXT_PUBLIC_HOST, 
       port: Number(process.env.NEXT_PUBLIC_PORT), 
       path: '/peerjs/myapp',
+      secure: true, // Use secure true if you are using https
     });
 
     newPeer.on('open', (id) => {
