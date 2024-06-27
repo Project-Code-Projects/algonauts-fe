@@ -75,7 +75,8 @@ const MeetingRoomPage = ({ params }: Params) => {
         setPeerId(helpRequest.studentId);
         setRemotePeerId(helpRequest.instructorId);
         socket.on("instructor-disconnected", () => {
-          alert("Instructor disconnected");
+          // alert("Instructor disconnected");
+          toast.success("Instructor disconnected");
           router.push("/student");
         });
       } else if (userInfo?.type === USER_TYPE.INSTRUCTOR) {

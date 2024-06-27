@@ -13,6 +13,9 @@ const notificationsSlice = createSlice({
     addNotification: (state, action: PayloadAction<Notification>) => {
       state.push(action.payload);
     },
+    removeNotification: (state, action: PayloadAction<number>) => {
+      
+    }
   },
 });
 
