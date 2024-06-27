@@ -7,6 +7,7 @@ import Post from "./post";
 import { useGetPostQuery, useCreatePostMutation } from "@/redux/api/postApi";
 import { useCreateCommentMutation } from "@/redux/api/commentApi";
 import { getUserInfo } from "@/services/auth.service";
+import { useLikePostActionMutation } from "@/redux/api/likeApi";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -14,8 +15,8 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 const PostForm = ({ addPost }) => {
   const [content, setContent] = useState("");
 
-// @ts-ignore
-  
+  // @ts-ignore
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (content) {
@@ -61,6 +62,7 @@ const Social = () => {
 
   const userInfo = getUserInfo();
   const [createPost] = useCreatePostMutation();
+  const [likePost] = useLikePostActionMutation();
   const [createComment] = useCreateCommentMutation();
   const [visibleComments, setVisibleComments] = useState({});
 
@@ -71,17 +73,17 @@ const Social = () => {
   if (postLoading) {
     return <div>Loading...</div>;
   }
-// @ts-ignore
+  // @ts-ignore
 
   const toggleCommentsVisibility = (postId) => {
     setVisibleComments((prevState) => ({
       ...prevState,
-// @ts-ignore
+      // @ts-ignore
 
       [postId]: !prevState[postId],
     }));
   };
-// @ts-ignore
+  // @ts-ignore
 
   const addComment = async (postId, comment) => {
     try {
@@ -90,15 +92,12 @@ const Social = () => {
         ...comment,
         userId: userInfo?._id,
       }).unwrap();
-
-
     } catch (error) {
       console.error("Failed to create comment: ", error);
     }
   };
 
-
-// @ts-ignore
+  // @ts-ignore
 
   const addPost = async (newPost) => {
     console.log("newPost: ", newPost);
@@ -109,17 +108,37 @@ const Social = () => {
     }
   };
 
+  // @ts-ignore
+  const likeAction = async (postId) => {
+    try {
+      // @ts-ignore
+
+      console.log(postId);
+      const likeData = {
+        postId,
+        userId: userInfo?._id,
+      };
+
+      await likePost({ post_id:postId, data:likeData }).unwrap();
+
+    } catch (error: any) {
+      console.error("Failed to like post: ", error);
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
       <PostForm addPost={addPost} />
-      
-      {posts?.data.map((post:any) => (
+
+      {posts?.data.map((post: any) => (
         <Post
           key={post.id}
           post={post}
           toggleCommentsVisibility={toggleCommentsVisibility}
           visibleComments={visibleComments}
           addComment={addComment}
+          likeAction={likeAction}
+          currentUserId={userInfo?._id}
         />
       ))}
     </div>
