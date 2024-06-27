@@ -27,6 +27,14 @@ export const studentApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.student, tagTypes.user, tagTypes.parent],
     }),
+
+    getStudentProgress: build.query({
+      query: (studentId) => ({
+        url: `${STUDENT_URL}/studentProgress/${studentId}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.studentProgress],
+    }),
   }),
 });
 
@@ -34,4 +42,5 @@ export const {
   useGetStudentByParentIdQuery,
   useGetStudentByUserIdQuery,
   useGetAllStudentsQuery,
+  useGetStudentProgressQuery,
 } = studentApi;

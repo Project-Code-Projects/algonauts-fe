@@ -1,6 +1,9 @@
 "use client";
 import SpinAnimation from "@/components/ui/SpinAnimation";
-import { useGetStudentByUserIdQuery } from "@/redux/api/studentApi";
+import {
+  useGetStudentByUserIdQuery,
+  useGetStudentProgressQuery,
+} from "@/redux/api/studentApi";
 import { getUserInfo } from "@/services/auth.service";
 import Link from "next/link";
 import React from "react";
@@ -23,6 +26,7 @@ import HelpRequestStudentComponent from "@/components/helpRequest/HelpRequestStu
 import NotificationComponent from "@/components/NotificationComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SocialPage from "@/components/social/social";
+import ExerciseProgressPieChart from "@/components/charts/ExerciseProgressPieChart";
 
 type HelpFormValues = {
   question: string;
@@ -61,6 +65,15 @@ const StudentPage = () => {
     isLoading: helpRequestIsLoading,
     isError: helpRequestIsError,
   } = useGetHelpRequestQuery({ studentId: studentId });
+
+  const {
+    data: studentPorgressResponse,
+    isLoading: studentProgressLoading,
+    isError: studentProgressError,
+  } = useGetStudentProgressQuery(studentId);
+
+  const studentProgressData = studentPorgressResponse?.data;
+  console.log(studentProgressData);
 
   if (isLoading) {
     return <SpinAnimation />;
@@ -133,7 +146,11 @@ const StudentPage = () => {
         </Tabs>
       </div>
 
-      <div className="my-12 flex justify-center items-center">
+      <div className="my-12 flex flex-col justify-center items-center">
+        <ExerciseProgressPieChart
+          totalExercises={studentProgressData.totalExercises}
+          numberOfExercisesDone={studentProgressData.numberOfExercisesDone}
+        />
         <Link href={"/student/syllabus"}>
           <button className="inline-block px-6 py-3 bg-violet-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300 ease-in-out">
             See syllabus
@@ -141,6 +158,7 @@ const StudentPage = () => {
         </Link>
       </div>
 
+      {/* Modal Start */}
       <Dialog
         open={openHelpDialogue}
         onOpenChange={() => setOpenHelpDialogue(!openHelpDialogue)}
