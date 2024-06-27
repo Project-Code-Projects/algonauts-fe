@@ -149,7 +149,7 @@ const StudentPage = () => {
       <div className="my-12 flex flex-col justify-center items-center">
         <ExerciseProgressPieChart
           totalExercises={studentProgressData?.totalExercises}
-          numberOfExercisesDone={studentProgressData.numberOfExercisesDone}
+          numberOfExercisesDone={studentProgressData?.numberOfExercisesDone}
         />
         <Link href={"/student/syllabus"}>
           <button className="inline-block px-6 py-3 bg-violet-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300 ease-in-out">
