@@ -101,80 +101,46 @@ const StudentPage = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <NotificationComponent />
+    <div className="flex justify-evenly items-start mx-auto p-6">
+      {/* Tabs component */}
 
-      <h1 className="text-3xl font-bold mb-4">Student Information</h1>
-      <Button variant="outline" onClick={() => setOpenHelpDialogue(true)}>
-        Help Request
-      </Button>
+      <div className="">
+        <NotificationComponent />
 
-      <div className="bg-white shadow-md rounded-lg p-4">
-        <p className="text-gray-600 mb-2">
-          <strong className="text-gray-800">ID:</strong> {studentData._id}
-        </p>
-        <p className="text-gray-600 mb-2">
-          <strong className="text-gray-800">Name:</strong> {studentData.name}
-        </p>
-        <p className="text-gray-600 mb-2">
-          <strong className="text-gray-800">Email:</strong> {studentData.email}
-        </p>
-        <p className="text-gray-600 mb-2">
-          <strong className="text-gray-800">Created At:</strong>{" "}
-          {new Date(studentData.createdAt).toLocaleString()}
-        </p>
-        <p className="text-gray-600">
-          <strong className="text-gray-800">Updated At:</strong>{" "}
-          {new Date(studentData.updatedAt).toLocaleString()}
-        </p>
-
-        <div className="flex justify-around w-full mt-12 space-x-8">
-          <Link href={"/student/beginner"}>
-            <div className="card bg-gray-100 p-6 rounded-lg shadow-md hover:bg-gray-200 cursor-pointer">
-              <h2 className="text-xl font-bold mb-2">Beginner</h2>
-              <p>Start your learning journey here.</p>
-            </div>
-          </Link>
-          <Link href={"/student/advanced"}>
-            <div className="card bg-gray-100 p-6 rounded-lg shadow-md hover:bg-gray-200 cursor-pointer">
-              <h2 className="text-xl font-bold mb-2">Advanced</h2>
-              <p>Take your skills to the next level.</p>
-            </div>
-          </Link>
-          <Link href={"/student/expert"}>
-            <div className="card bg-gray-100 p-6 rounded-lg shadow-md hover:bg-gray-200 cursor-pointer">
-              <h2 className="text-xl font-bold mb-2">Expert</h2>
-              <p>Become a master in your field.</p>
-            </div>
-          </Link>
-        </div>
+        <Button
+          variant="outline"
+          onClick={() => setOpenHelpDialogue(true)}
+          className="ml-4"
+        >
+          Help Request
+        </Button>
       </div>
 
-      {/* Tabs component */}
-      <Tabs defaultValue="social" className="mt-2 w-full">
-        <TabsList>
-          <TabsTrigger value="social">Social</TabsTrigger>
-          <TabsTrigger value="help-request">Help Request</TabsTrigger>
-        </TabsList>
-        <TabsContent value="social">
-          <SocialPage />
-        </TabsContent>
-        <TabsContent value="help-request">
-          {helpRequestData.data && helpRequestData.data.length > 0 && (
-            <HelpRequestStudentComponent data={helpRequestData.data} />
-          )}
-        </TabsContent>
-      </Tabs>
+      <div className="flex-grow">
+        <Tabs defaultValue="social" className="mt-2 w-full">
+          <TabsList className="flex justify-center ">
+            <TabsTrigger value="social">Social</TabsTrigger>
+            <TabsTrigger value="help-request">Help Request</TabsTrigger>
+          </TabsList>
+          <TabsContent value="social">
+            <SocialPage />
+          </TabsContent>
+          <TabsContent value="help-request">
+            {helpRequestData?.data && helpRequestData?.data.length > 0 && (
+              <HelpRequestStudentComponent data={helpRequestData.data} />
+            )}
+          </TabsContent>
+        </Tabs>
+      </div>
 
-      {/* Help request component */}
+      <div className="my-12 flex justify-center items-center">
+        <Link href={"/student/syllabus"}>
+          <button className="inline-block px-6 py-3 bg-violet-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300 ease-in-out">
+            See syllabus
+          </button>
+        </Link>
+      </div>
 
-      {/* {helpRequestData.data && helpRequestData.data.length > 0 && (
-        <HelpRequestStudentComponent data={helpRequestData.data} />
-      )} */}
-
-      {/* <HelpRequestStudentComponent data={helpRequestData} /> */}
-
-      {/* Help request modal */}
       <Dialog
         open={openHelpDialogue}
         onOpenChange={() => setOpenHelpDialogue(!openHelpDialogue)}
