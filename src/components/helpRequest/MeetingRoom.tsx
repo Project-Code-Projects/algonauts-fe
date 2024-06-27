@@ -35,6 +35,9 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
     newPeer.on('call', (incomingCall) => {
       navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
         localStreamRef.current = stream;
+        if (localVideoRef.current) {
+          localVideoRef.current.srcObject = stream;
+        }
         incomingCall.answer(stream);
         setCall(incomingCall);
         setIsCallActive(true);
