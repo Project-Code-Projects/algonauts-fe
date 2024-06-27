@@ -13,7 +13,15 @@ export const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.student, tagTypes.user],
     }),
+    resetUserPassword: build.mutation({
+      query: ({ userId, oldPassword, newPassword }) => ({
+        url: `${AUTH_URL}/reset-password/${userId}`,
+        method: "PUT",
+        data: { oldPassword, newPassword },
+      }),
+      invalidatesTags: [tagTypes.user],
+    }),
   }),
 });
 
-export const { useAddUserMutation } = userApi;
+export const { useAddUserMutation, useResetUserPasswordMutation } = userApi;
