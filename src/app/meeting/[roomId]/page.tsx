@@ -16,6 +16,7 @@ import { useForm, Controller } from "react-hook-form";
 import hljs from "highlight.js";
 import Quill from "quill";
 import toast from "react-hot-toast";
+import socket from "@/services/socket";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -23,6 +24,7 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 window.Quill = Quill;
 require("highlight.js");
 
+// import socket from "../../../services/socket";
 const modules = {
   syntax: {
     highlight: (text: string) => hljs.highlightAuto(text).value,
@@ -72,6 +74,10 @@ const MeetingRoomPage = ({ params }: Params) => {
       if (userInfo?.type === USER_TYPE.STUDENT) {
         setPeerId(helpRequest.studentId);
         setRemotePeerId(helpRequest.instructorId);
+        socket.on("instructor-disconnected", () => {
+          alert("Instructor disconnected");
+          router.push("/student");
+        });
       } else if (userInfo?.type === USER_TYPE.INSTRUCTOR) {
         setPeerId(helpRequest.instructorId);
         setRemotePeerId(helpRequest.studentId);
@@ -124,15 +130,6 @@ const MeetingRoomPage = ({ params }: Params) => {
     <>
       {helpRequestData && peerId !== "" && remotePeerId !== "" && (
         <div className="container mx-auto p-8 bg-gray-100 rounded-lg shadow-md">
-          {userInfo?.type === USER_TYPE.INSTRUCTOR && (
-            <button
-              onClick={() => {
-                closeMeeting();
-              }}
-            >
-              Close Meeting
-            </button>
-          )}
           <MeetingRoom
             roomId={roomId}
             meetingPeerId={peerId}
@@ -171,7 +168,7 @@ const MeetingRoomPage = ({ params }: Params) => {
                   {isSubmitting ? "Submitting..." : "Submit Notes"}
                 </button>
                 <button
-                className={`mt-4 py-2 px-4 rounded`}
+                  className={`mt-4 py-2 px-4 rounded`}
                   onClick={() => {
                     closeMeeting();
                   }}
