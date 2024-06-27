@@ -32,7 +32,7 @@ const Post = ({
     setCommentContent("");
   };
 
-  const hasLiked = post.likes.some(
+  const hasLiked = post.likes?.some(
     (like: any) => like.userId === currentUserId
   );
 
@@ -61,7 +61,7 @@ const Post = ({
                   likeAction(post.id);
                 }}
               />
-              {post.likes.length} Likes
+              {post.likes?.length} Likes
             </div>
           </button>
         </span>
