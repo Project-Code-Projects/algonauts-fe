@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useUserLoginMutation } from "@/redux/api/authApi";
-import { storeUserInfo, getUserInfo, setUserData } from "@/services/auth.service";
+import { storeUserInfo, getUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
+import { authEvents } from "@/utils/authEvents";
 
 const LoginPage = () => {
   const {
@@ -23,16 +23,16 @@ const LoginPage = () => {
   const onSubmit = async (data: any) => {
     try {
       const loginResponse = await userLogin(data).unwrap();
-      console.log(loginResponse);
+      // console.log(loginResponse);
 
       if (loginResponse?.success) {
-        
         storeUserInfo({ token: loginResponse?.data?.token });
         const userInfo = getUserInfo() as any;
-        console.log(userInfo);
+        // console.log(userInfo);
         //  await setUserData(userInfo);
+        authEvents.login();
         if (userInfo) {
-          console.log(userInfo.type);
+          // console.log(userInfo.type);
           router.push(`/${userInfo.type}`);
         }
       }

@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-
 import { authKey } from "@/constants/storageKey";
 import { isLoggedIn, removeUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
@@ -12,7 +11,16 @@ const Navbar = () => {
   const router = useRouter();
 
   useEffect(() => {
-    setLoggedIn(isLoggedIn());
+    const checkLoginStatus = () => setLoggedIn(isLoggedIn());
+
+    checkLoginStatus();
+    window.addEventListener("auth-login", checkLoginStatus);
+    window.addEventListener("auth-logout", checkLoginStatus);
+
+    return () => {
+      window.removeEventListener("auth-login", checkLoginStatus);
+      window.removeEventListener("auth-logout", checkLoginStatus);
+    };
   }, []);
 
   const handleLogout = () => {
