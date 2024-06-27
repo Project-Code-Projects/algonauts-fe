@@ -39,6 +39,7 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
     });
 
     newPeer.on('call', (incomingCall) => {
+<<<<<<< HEAD
       navigator.mediaDevices.getUserMedia({ video: true, audio: true })
         .then((stream) => {
           localStreamRef.current = stream;
@@ -54,6 +55,20 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
         .catch((err) => {
           setError('Failed to access media devices.');
           console.error(err);
+=======
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+        localStreamRef.current = stream;
+        if (localVideoRef.current) {
+          localVideoRef.current.srcObject = stream;
+        }
+        incomingCall.answer(stream);
+        setCall(incomingCall);
+        setIsCallActive(true);
+        incomingCall.on('stream', (remoteStream) => {
+          if (remoteVideoRef.current) {
+            remoteVideoRef.current.srcObject = remoteStream;
+          }
+>>>>>>> bug-fixes-improvement-mhtsm
         });
     });
 
