@@ -16,15 +16,21 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
   const [isCallActive, setIsCallActive] = useState<boolean>(false);
   const [isAudioMuted, setIsAudioMuted] = useState<boolean>(false);
   const [isVideoOff, setIsVideoOff] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
+
+  console.log('roomId:', roomId);
+  console.log('meetingPeerId:', meetingPeerId);
+  console.log('meetingRemotePeerId:', meetingRemotePeerId);
 
   useEffect(() => {
     const newPeer = new Peer(meetingPeerId, {
       host: process.env.NEXT_PUBLIC_HOST, 
       port: Number(process.env.NEXT_PUBLIC_PORT), 
       path: '/peerjs/myapp',
+      // secure: true, // Use secure true if you are using https
     });
 
     newPeer.on('open', (id) => {
@@ -33,17 +39,30 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
     });
 
     newPeer.on('call', (incomingCall) => {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-        localStreamRef.current = stream;
-        incomingCall.answer(stream);
-        setCall(incomingCall);
-        setIsCallActive(true);
-        incomingCall.on('stream', (remoteStream) => {
-          if (remoteVideoRef.current) {
-            remoteVideoRef.current.srcObject = remoteStream;
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          localStreamRef.current = stream;
+          if (localVideoRef.current) {
+            localVideoRef.current.srcObject = stream;
           }
+          incomingCall.answer(stream);
+          setCall(incomingCall);
+          setIsCallActive(true);
+          incomingCall.on('stream', (remoteStream) => {
+            if (remoteVideoRef.current) {
+              remoteVideoRef.current.srcObject = remoteStream;
+            }
+          });
+        })
+        .catch((err) => {
+          setError('Failed to access media devices.');
+          console.error(err);
         });
-      });
+    });
+
+    newPeer.on('error', (err) => {
+      setError('An error occurred with the peer connection.');
+      console.error(err);
     });
 
     setPeer(newPeer);
@@ -55,21 +74,28 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
 
   const startCall = () => {
     if (peer) {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-        localStreamRef.current = stream;
-        if (localVideoRef.current) {
-          localVideoRef.current.srcObject = stream;
-        }
-
-        const outgoingCall = peer.call(meetingRemotePeerId, stream);
-        setCall(outgoingCall);
-        setIsCallActive(true);
-        outgoingCall.on('stream', (remoteStream) => {
-          if (remoteVideoRef.current) {
-            remoteVideoRef.current.srcObject = remoteStream;
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          localStreamRef.current = stream;
+          if (localVideoRef.current) {
+            localVideoRef.current.srcObject = stream;
           }
+
+          const outgoingCall = peer.call(meetingRemotePeerId, stream);
+          setCall(outgoingCall);
+          setIsCallActive(true);
+          outgoingCall.on('stream', (remoteStream) => {
+            if (remoteVideoRef.current) {
+              remoteVideoRef.current.srcObject = remoteStream;
+            }
+          });
+        })
+        .catch((err) => {
+          setError('Failed to start call.');
+          console.error(err);
         });
-      });
+    } else {
+      setError('Peer connection is not established.');
     }
   };
 
@@ -110,6 +136,7 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
       ) : (
         <p className="text-center mb-4">Connecting...</p>
       )}
+      {error && <p className="text-center mb-4 text-red-500">{error}</p>}
       <div className="flex justify-center mb-4">
         {!isCallActive ? (
           <button 
