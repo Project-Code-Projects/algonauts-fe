@@ -1,4 +1,4 @@
-a'use client'
+'use client'
 import React, { useEffect, useRef, useState } from 'react';
 import Peer from 'peerjs';
 import { FaMicrophone, FaMicrophoneSlash, FaVideo, FaVideoSlash, FaPhone, FaPhoneSlash } from 'react-icons/fa';
