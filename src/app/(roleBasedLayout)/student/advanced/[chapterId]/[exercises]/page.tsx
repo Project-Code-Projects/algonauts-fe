@@ -9,6 +9,8 @@ import TestCaseTabs from "@/components/codeEditor/TestCaseTabs";
 import usePreventCheat from "@/hooks/usePreventCheat";
 import { getUserInfo } from "@/services/auth.service";
 import { useAddExerciseLogMutation } from "@/redux/api/exerciseLogApi";
+import { useGetNextExerciseQuery } from "@/redux/api/exerciseApi";
+import { useRouter } from "next/navigation";
 
 type IParams = {
   exercises: string;
@@ -22,6 +24,10 @@ type ITestCase = {
 
 const ExercisePage = ({ params }: { params: IParams }) => {
   const { exercises: exerciseId } = params;
+  const { data: fetchNextExercise } = useGetNextExerciseQuery(exerciseId);
+  const nextExerciseId = fetchNextExercise?.data?._id;
+  console.log("I am next exercise id", nextExerciseId);
+  const router = useRouter();
   const {
     data: EditorLevelDataFromBE,
     error,
@@ -64,6 +70,8 @@ const ExercisePage = ({ params }: { params: IParams }) => {
       setCode(EditorLevelDataFromBE.data[0].functionPlaceholder);
     }
   }, [EditorLevelDataFromBE]);
+
+  console.log(EditorLevelDataFromBE?.data[0]?.exerciseId);
 
   useEffect(() => {
     if (logCreated.current) return;
@@ -194,12 +202,22 @@ const ExercisePage = ({ params }: { params: IParams }) => {
         status: true,
         codeSnippet: code,
       };
-      console.log(exerciseLogData);
+      // console.log(exerciseLogData);
 
       try {
         await addExerciseLog(exerciseLogData);
         if (addExerciseLogSuccess) {
-          toast.success("Successfully submitted");
+          if (nextExerciseId) {
+            toast.success(
+              "Successfully submitted. Redirecting you to the next exercise"
+            );
+            router.push(`/student/advanced/exercises/${nextExerciseId}`);
+          } else {
+            toast.success(
+              "Successfully submitted. No more exercises left in this chapter."
+            );
+            router.push(`/student/advanced`);
+          }
         }
       } catch (error) {
         toast.error("Failed to log exercise");

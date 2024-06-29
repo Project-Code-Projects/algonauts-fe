@@ -5,6 +5,7 @@ export enum tagTypes {
   helpRequest = "helpRequest",
   section = "section",
   chapter = "chapter",
+  exercise = "exercise",
   editorLevel = "editorLevel",
   exerciseLog = "exerciseLog",
   beginnerLevel = "beginnerLeqvel",
@@ -29,7 +30,8 @@ export const tagTypesList = [
   tagTypes.stats,
   tagTypes.comment,
   tagTypes.studentProgress,
-  tagTypes.like
+  tagTypes.like,
+  tagTypes.exercise,
 ];
 
 /*
