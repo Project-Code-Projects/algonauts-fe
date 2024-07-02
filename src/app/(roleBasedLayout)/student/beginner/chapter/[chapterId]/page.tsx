@@ -23,23 +23,23 @@ type IParams = {
 
 const ProblemsByChapterPage = ({ params }: { params: IParams }) => {
   const { chapterId } = params;
-  const { data, error, isLoading } = useGetChapterByIdQuery(chapterId);
+  // const { data, error, isLoading } = useGetChapterByIdQuery(chapterId);
 
   const {
     data: beginnerLevelData,
     isLoading:isLevelLoading,
     isError,
-} = useGetBeginnerLevelQuery({});
+} = useGetBeginnerLevelQuery({chapterId: chapterId});
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error fetching data</div>;
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error fetching data</div>;
 
   if (isLevelLoading) return <SpinAnimation />;
     if (isError)
         return <div className={styles.errorMessage}>Error loading data</div>;
 
 
-  const { chapter, exercises } = data.data;
+  // const { chapter, exercises } = data.data;
 
   return (
     <div className={styles.container}>
