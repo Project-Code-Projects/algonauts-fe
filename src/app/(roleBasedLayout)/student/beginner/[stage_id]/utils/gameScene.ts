@@ -16,7 +16,7 @@ export class GameScene extends Phaser.Scene {
 
     preload() {
         // Load assets here
-        this.load.image('sky', '../../assets/scifi wallpaper.png');
+        this.load.image('sky', '../../assets/image.png');
         this.load.spritesheet('dude', '../../assets/astro.webp', { frameWidth: 42, frameHeight: 48 });
         this.load.spritesheet('blackhole', '../../assets/fire.png', { frameWidth: 15, frameHeight: 24 });
         this.load.image('spacecraft', '../../assets/spaceship.png');
