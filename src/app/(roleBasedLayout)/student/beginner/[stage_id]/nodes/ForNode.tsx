@@ -19,7 +19,7 @@ function ForNode({ id, data }: {
   const numOfChild = ctx.nodes.reduce((count, node) => node.parentNode == id ? count + 1 : count, 0);
 
   return (
-    <div className=" relative bg-black/80 border-2 border-yellow-500 py-6 px-4" style={{ height: `${(numOfChild * 10) + 10}rem`, width: 'auto' }}>
+    <div className=" relative bg-[#47494a]/80 border-2 border-yellow-500 py-6 px-4" style={{ height: `${(numOfChild * 10) + 10}rem`, width: 'auto' }}>
       <div className='flex'>
         {/* <div className='node-icon flex-center'><img src={loop} /></div> */}
         <div className='flex-grow'>
@@ -29,8 +29,8 @@ function ForNode({ id, data }: {
             <span className='text-yellow-500 text-xl'> times</span>
           </div>
           <div className="for-btn-container">
-            <button className='bg-[#0f56d9] rounded-md ml-2 p-1 border-2 border-black text-white mt-1' onClick={() => ctx.addNode('move', id)}>+ Move</button>
-            <button className='bg-[#0f56d9] rounded-md ml-2 p-1 border-2 border-black text-white mt-1' onClick={() => ctx.addNode('turn', id)}>+ Turn</button>
+            <button className='bg-[#75aff0] rounded-md ml-2 p-1 border-2 border-black text-white mt-1' onClick={() => ctx.addNode('move', id)}>+ Move</button>
+            <button className='bg-[#75aff0] rounded-md ml-2 p-1 border-2 border-black text-white mt-1' onClick={() => ctx.addNode('turn', id)}>+ Turn</button>
           </div>
         </div>
         {/* <div className="close-btn-container"><img className="close-btn" src={close} onClick={() => ctx.removeNode(id)} /></div> */}
