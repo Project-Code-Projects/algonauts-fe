@@ -77,7 +77,7 @@ export default function App({ params }: Params) {
             color: "#d90fcb",
           },
           style: {
-            strokeWidth: 3,
+            strokeWidth: 7,
             stroke: "#784be8",
           },
         };
@@ -371,7 +371,7 @@ export default function App({ params }: Params) {
             onConnect={onConnect}
             fitView
           >
-            <Background color="#f2e707" variant={BackgroundVariant.Cross} />
+            <Background color="#080807" variant={BackgroundVariant.Cross} />
             <Controls />
           </ReactFlow>
         </div>
