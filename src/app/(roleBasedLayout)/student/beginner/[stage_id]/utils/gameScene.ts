@@ -64,7 +64,7 @@ export class GameScene extends Phaser.Scene {
 
         this.anims.create({
             key: 'move',
-            frames: this.anims.generateFrameNumbers('dude', { start: 8, end: 8 }),
+            frames: this.anims.generateFrameNumbers('dude', { start: 8, end: 11 }),
             frameRate: 10,
             repeat: -1,
         });

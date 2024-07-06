@@ -4,7 +4,7 @@ import type { Edge, OnConnect } from "reactflow";
 import LinkedList from "./utils/LinkedList";
 import Game from "./game/Game1";
 import FlowContext from "./context/FlowContext";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import {
   Background,
   Controls,
@@ -56,12 +56,15 @@ export default function App({ params }: Params) {
       return a;
     }());
   const [gameScene, setGameScene] = useState<GameScene | null>(null);
-
   const {
     data: gameData,
     isLoading: loadingLevel,
     isError: loadingLevelError,
   } = useGetBeginnerLevelByLevelIdQuery(levelId);
+
+  useEffect(() => setCode(gameData?.data?.description),[gameData]);
+  
+  
 
   // useCallback for memoization
   const onConnect: OnConnect = useCallback(
@@ -371,7 +374,7 @@ export default function App({ params }: Params) {
             onConnect={onConnect}
             fitView
           >
-            <Background color="#080807" variant={BackgroundVariant.Cross} />
+            <Background color="#080807" size={1} variant={BackgroundVariant.Cross} />
             <Controls />
           </ReactFlow>
         </div>
