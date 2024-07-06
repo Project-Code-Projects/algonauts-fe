@@ -11,7 +11,7 @@ import {
 
 const CompletionTimeComparisonChart = ({ data }: { data: any }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
+    <div className="rounded-lg shadow-lg p-6">
       <h2 className="text-2xl font-semibold text-gray-700 mb-4">
         Completion Time Comparison
       </h2>

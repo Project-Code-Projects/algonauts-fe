@@ -6,6 +6,7 @@ import { useAddUserMutation } from "@/redux/api/userApi";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { getUserInfo } from "@/services/auth.service";
+import alogoanutsLogo from "../../../../../public/navbar/logo.png";
 
 const AddStudentPage = () => {
   const {
@@ -47,15 +48,10 @@ const AddStudentPage = () => {
   };
 
   return (
-    <div className="bg-blue-100 h-[92vh] flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <div className=" h-[92vh] flex items-center justify-center">
+      <div className=" p-8  w-full max-w-md">
         <div className="flex justify-center mb-6">
-          <Image
-            src="https://codecombat.com/images/pages/base/logo.webp"
-            alt="Logo"
-            width={150}
-            height={150}
-          />
+          <Image src={alogoanutsLogo} alt="Logo" width={150} height={150} />
         </div>
         <h2 className="text-2xl font-bold text-center mb-8">Add Your Child</h2>
         <form onSubmit={handleSubmit(onSubmit)}>

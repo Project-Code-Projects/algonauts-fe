@@ -2,14 +2,11 @@
 import HelpRequestInstructorComponent from "@/components/helpRequest/HelpRequestInstructorComponent";
 import SpinAnimation from "@/components/ui/SpinAnimation";
 import { useGetHelpRequestQuery } from "@/redux/api/helpRequestApi";
-// import { useGetParentbyUserIdQuery } from "@/redux/api/parentApi";
 import { useGetInstructorApiQuery } from "@/redux/api/instructorApi";
-import { useGetStudentByParentIdQuery } from "@/redux/api/studentApi";
 import { getUserInfo } from "@/services/auth.service";
-import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SocialPage from "@/components/social/social";
-
+import Image from "next/image";
 
 const InstructorProfilePage = () => {
   const userInfo = getUserInfo();
@@ -27,8 +24,6 @@ const InstructorProfilePage = () => {
     isError: helpRequestIsError,
   } = useGetHelpRequestQuery({});
 
-  // const { data: studentsByParentId } = useGetStudentByParentIdQuery(parentId);
-
   if (isLoading) {
     return <SpinAnimation />;
   }
@@ -42,32 +37,49 @@ const InstructorProfilePage = () => {
   }
 
   const instructorData = instructorDataFromBE?.data[0]?.userId;
-  // const studentData = studentsByParentId?.data;
 
   return (
-    <div className="min-h-[92vh] flex flex-col items-center justify-center">
-      <h1 className="text-2xl font-bold mb-4">
-        instructor Name: {instructorData.name}{" "}
-      </h1>
-      <h1 className="text-2xl font-bold mb-8">
-        Instructor userId: {instructorData._id}{" "}
-      </h1>
-      <Link href={"/instructor/dataAnalysis"}>Data Analysis</Link>
+    <div className="min-h-[92vh] flex ">
+      {/* Left side: Instructor Information */}
+      <div className="w-1/3 p-6 shadow-md">
+        <div className="flex flex-col  mb-6">
+          <Image
+            src={`https://avatar.iran.liara.run/public/boy`}
+            alt={instructorData.name}
+            width={128}
+            height={128}
+            className="rounded-full mb-4 border-4 border-blue-500"
+          />
+          <h1 className="text-2xl font-bold text-gray-800">
+            {instructorData.name}
+          </h1>
+          <p className="text-gray-600">Email: {instructorData.email}</p>
+        </div>
+      </div>
 
-      <Tabs defaultValue="social" className="mt-2 w-full">
-        <TabsList>
-          <TabsTrigger value="social">Social</TabsTrigger>
-          <TabsTrigger value="help-request">Help Request</TabsTrigger>
-        </TabsList>
-        <TabsContent value="social">
-          <SocialPage />
-        </TabsContent>
-        <TabsContent value="help-request">
-          {helpRequestData.data && helpRequestData.data.length > 0 && (
-            <HelpRequestInstructorComponent data={helpRequestData.data} />
-          )}
-        </TabsContent>
-      </Tabs>
+      {/* Right side: Social and Help Request */}
+      <div className="w-2/3 p-6">
+        <Tabs defaultValue="social" className="w-full">
+          <TabsList className="mb-4">
+            <TabsTrigger value="social" className="px-4 py-2">
+              Social
+            </TabsTrigger>
+            <TabsTrigger value="help-request" className="px-4 py-2">
+              Help Request
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="social">
+            <SocialPage />
+          </TabsContent>
+          <TabsContent value="help-request">
+            {helpRequestData?.data && helpRequestData.data.length > 0 ? (
+              <HelpRequestInstructorComponent data={helpRequestData.data} />
+            ) : (
+              <p className="text-gray-600">No help requests available.</p>
+            )}
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };

@@ -64,7 +64,7 @@ const ParentsChildPage = ({ params }: { params: IParams }) => {
   }));
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gray-50">
+    <div className="container mx-auto px-4 py-8 ">
       <h1 className="text-4xl font-bold text-center text-gray-800 mb-10">
         Student Statistics
       </h1>
@@ -77,7 +77,7 @@ const ParentsChildPage = ({ params }: { params: IParams }) => {
         <CompletionTimeComparisonChart data={completionTimeData} />
       </div>
 
-      <div className="mt-10 bg-white rounded-lg shadow-lg p-6">
+      <div className="mt-10 rounded-lg shadow-lg p-6">
         <h2 className="text-2xl font-semibold text-gray-700 mb-4">
           Total Help Requests
         </h2>

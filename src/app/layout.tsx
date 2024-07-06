@@ -4,11 +4,12 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import Providers from "@/lib/Providers";
 import Navbar from "@/components/shared/Navbar";
-import { useRouter } from "next/navigation";
 import { Toaster } from "react-hot-toast";
-import { Inter as FontSans } from "next/font/google"
+import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import ClientSideSocketInitializer from "@/components/ClientSideSocketInitializer";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const nunito = Nunito({
   subsets: ["latin"],
@@ -20,7 +21,7 @@ const nunito = Nunito({
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+});
 
 export const metadata: Metadata = {
   title: "Algonauts",
@@ -32,14 +33,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log("RootLayout");
   return (
     <Providers>
       <html lang="en">
-        <body className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}>
+        <body
+          className={cn(
+            "min-h-screen  bg-gradient-to-r from-blue-200 to-green-200  font-sans antialiased",
+            fontSans.variable
+          )}
+        >
           <Toaster position="top-center" />
           <Navbar />
           <ClientSideSocketInitializer />

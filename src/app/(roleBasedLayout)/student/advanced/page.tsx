@@ -32,7 +32,7 @@ const styles = {
   title: "text-3xl font-bold text-gray-900 mb-8",
   chaptersContainer: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6",
   chapterCard:
-    "bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition duration-300",
+    "bg-white shadow-md rounded-lg p-6 hover:shadow-lg transition duration-300 glassmorphism",
   chapterTitle: "text-xl font-semibold text-gray-800 mb-2",
   chapterDescription: "text-gray-600",
   errorMessage: "text-red-600 font-semibold text-center",

@@ -42,8 +42,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="bg-blue-100 h-[92vh] flex items-center justify-center">
-      <div className="bg-tan-500 border-4 border-gray-900 p-8 rounded-lg shadow-lg max-w-md w-full relative">
+    <div className="h-[100vh] flex items-center justify-center">
+      <div className="p-8  max-w-md w-full relative">
         <h1 className="text-gray-900 text-2xl mb-6 font-bold">
           EMAIL OR USERNAME:
         </h1>
@@ -81,7 +81,10 @@ const LoginPage = () => {
           )}
 
           <div className="flex items-center mb-6 ">
-            <Link href="/signup" className="text-red-500 hover:text-blue-700 ">
+            <Link
+              href="/signup/parentSignup"
+              className="text-red-500 hover:text-blue-700 "
+            >
               <p className=""> Don&apos;t have an account?</p>
             </Link>
           </div>

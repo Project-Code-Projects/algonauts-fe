@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import { useResetUserPasswordMutation } from "@/redux/api/userApi";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 const StudentProfilePage = () => {
   const userInfo = getUserInfo();
@@ -86,9 +87,13 @@ const StudentProfilePage = () => {
             Student Profile
           </h1>
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center border-b border-gray-200 pb-2">
-              <span className="text-gray-600 font-medium w-1/3">ID:</span>
-              <span className="text-gray-800 sm:w-2/3">{studentData._id}</span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-center border-b border-gray-200 pb-2">
+              <Image
+                src={`https://avatar.iran.liara.run/public/boy`}
+                alt={studentData.name}
+                width={64}
+                height={64}
+              />
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center border-b border-gray-200 pb-2">
               <span className="text-gray-600 font-medium w-1/3">Name:</span>
