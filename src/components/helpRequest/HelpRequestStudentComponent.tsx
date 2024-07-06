@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 export interface Question {
@@ -28,14 +26,11 @@ const HelpRequestStudentComponent = ({ data }: { data: Question[] }) => {
     setShowModal(true);
   };
   return (
-    <div className="container mx-auto p-8 bg-white shadow-md">
+    <div className="container mx-auto p-8  shadow-md">
       <h1 className="text-3xl font-bold text-center mb-6">Student Questions</h1>
       <ul className="space-y-4">
         {data.map((item) => (
-          <li
-            key={item._id}
-            className="bg-white shadow-md rounded-lg p-6 border border-gray-300 m-4"
-          >
+          <li key={item._id} className="  p-6  m-4">
             <p className="text-lg font-semibold mb-2">{item.question}</p>
             <p className="text-sm text-gray-600">
               <strong>Status:</strong> {item.status}
