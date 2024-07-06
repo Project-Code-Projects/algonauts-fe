@@ -11,6 +11,7 @@ import { getUserInfo } from "@/services/auth.service";
 import { useAddExerciseLogMutation } from "@/redux/api/exerciseLogApi";
 import { useGetNextExerciseQuery } from "@/redux/api/exerciseApi";
 import { useRouter } from "next/navigation";
+import { tailwindButtonClass } from "@/stylesShared/tailwindButtonClass";
 
 type IParams = {
   exercises: string;
@@ -26,7 +27,7 @@ const ExercisePage = ({ params }: { params: IParams }) => {
   const { exercises: exerciseId } = params;
   const { data: fetchNextExercise } = useGetNextExerciseQuery(exerciseId);
   const nextExerciseId = fetchNextExercise?.data?._id;
-  console.log("I am next exercise id", nextExerciseId);
+  // console.log("I am next exercise id", nextExerciseId);
   const router = useRouter();
   const {
     data: EditorLevelDataFromBE,
@@ -71,7 +72,7 @@ const ExercisePage = ({ params }: { params: IParams }) => {
     }
   }, [EditorLevelDataFromBE]);
 
-  console.log(EditorLevelDataFromBE?.data[0]?.exerciseId);
+  // console.log(EditorLevelDataFromBE?.data[0]?.exerciseId);
 
   useEffect(() => {
     if (logCreated.current) return;
@@ -290,17 +291,14 @@ const ExercisePage = ({ params }: { params: IParams }) => {
           // }}
         />
         <div className="flex items-center justify-between">
-          <button
-            onClick={runCode}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
+          <button onClick={runCode} className={`${tailwindButtonClass} mt-2`}>
             Run Code
           </button>
 
           <button
             onClick={handleSubmit}
             disabled={isButtonDisabled}
-            className={`mt-4 mr-8 px-4 py-2 rounded ${
+            className={`mt-2 mr-8 px-4 py-2 rounded ${
               isButtonDisabled
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                 : "bg-blue-500 text-white hover:bg-blue-700"
@@ -310,9 +308,9 @@ const ExercisePage = ({ params }: { params: IParams }) => {
           </button>
         </div>
       </div>
-      <div className="w-1/4 mt-4">
+      <div className="w-1/4">
         <h1 className="text-xl font-semibold mb-4">Output</h1>
-        <div className="h-[50vh] bg-white mb-4 p-4 overflow-auto shadow-md rounded-lg">
+        <div className="h-[50vh] bg-green-100 mb-4 p-4 overflow-auto shadow-md rounded-lg">
           {results.map((result, index) => (
             <p key={index}>{result}</p>
           ))}

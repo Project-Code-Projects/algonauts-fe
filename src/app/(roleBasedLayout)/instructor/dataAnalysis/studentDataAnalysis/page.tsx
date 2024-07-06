@@ -18,8 +18,8 @@ const StudentDataAnalysisPage = () => {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Student Data Analysis Page</h1>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-          <thead className="bg-gray-100">
+        <table className="min-w-full  shadow-md rounded-lg overflow-hidden">
+          <thead className="bg-green-100">
             <tr>
               <th className="py-3 px-4 text-left font-semibold text-gray-600 uppercase tracking-wider">
                 Student Name

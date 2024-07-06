@@ -97,7 +97,7 @@ const IndividualStudentDataPage = ({ params }: { params: IParams }) => {
   }));
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gray-50">
+    <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold text-center text-gray-800 mb-10">
         Student Statistics
       </h1>
@@ -110,7 +110,10 @@ const IndividualStudentDataPage = ({ params }: { params: IParams }) => {
         <CompletionTimeComparisonChart data={completionTimeData} />
       </div>
 
-      <div className="mt-10 bg-white rounded-lg shadow-lg p-6">
+      <div
+        className="mt-10
+       rounded-lg shadow-lg p-6"
+      >
         <h2 className="text-2xl font-semibold text-gray-700 mb-4">
           Total Help Requests
         </h2>
@@ -133,7 +136,7 @@ const IndividualStudentDataPage = ({ params }: { params: IParams }) => {
                     (snippet: any, snippetIndex: number) => (
                       <div
                         key={snippetIndex}
-                        className="mb-4 p-4 bg-white rounded shadow"
+                        className="mb-4 p-4 bg-green-50 rounded shadow"
                       >
                         <p className="text-sm text-gray-600 mb-2">
                           Completed on:{" "}
@@ -161,7 +164,7 @@ const IndividualStudentDataPage = ({ params }: { params: IParams }) => {
                             <DialogHeader>
                               <DialogTitle>Code Snippet</DialogTitle>
                               <DialogDescription>
-                                <pre className="whitespace-pre-wrap bg-gray-100 p-4 rounded">
+                                <pre className="whitespace-pre-wrap bg-green-100 p-4 rounded">
                                   {snippet.codeSnippet}
                                 </pre>
                               </DialogDescription>

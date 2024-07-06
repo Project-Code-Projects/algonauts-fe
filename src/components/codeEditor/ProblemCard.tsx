@@ -29,7 +29,7 @@ const ProblemCard: React.FC<ProblemCardProps> = ({
       {examples.map((example, index) => (
         <div key={index} className="mb-6">
           <h2 className="text-xl font-semibold mb-2">Example {index + 1}:</h2>
-          <div className="bg-gray-100 p-4 rounded">
+          <div className="bg-green-100 p-4 rounded">
             <p>
               <strong>Input:</strong> {example.input}
             </p>
@@ -45,7 +45,7 @@ const ProblemCard: React.FC<ProblemCardProps> = ({
 
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-2">Constraints:</h2>
-        <ul className="list-disc list-inside bg-gray-100 p-4 rounded">
+        <ul className="list-disc list-inside bg-green-100 p-4 rounded">
           {constraints?.map((constraint, index) => (
             <li key={index}>{constraint}</li>
           ))}

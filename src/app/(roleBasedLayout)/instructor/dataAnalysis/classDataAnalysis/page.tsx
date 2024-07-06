@@ -16,7 +16,7 @@ const ClassDataAnalysis = () => {
     <div className="container mx-auto px-4">
       <h2 className="text-2xl font-bold mb-4">Class Data Analysis</h2>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-300">
+        <table className="min-w-full  border border-gray-300">
           <thead>
             <tr className="bg-gray-100">
               <th className="px-4 py-2 text-left">Exercise Name</th>
@@ -31,7 +31,7 @@ const ClassDataAnalysis = () => {
             {classStatsFromBE?.data?.map((stat: any, index: any) => (
               <tr
                 key={stat._id}
-                className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
+                className={index % 2 === 0 ? "bg-green-50" : "bg-white"}
               >
                 <td className="px-4 py-2 border-t">{stat.exerciseName}</td>
                 <td className="px-4 py-2 border-t">{stat.exerciseType}</td>
