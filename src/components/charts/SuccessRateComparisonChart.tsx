@@ -9,9 +9,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const SuccessRateComparisonChart = ({ data } : {data : any}) => {
+const SuccessRateComparisonChart = ({ data }: { data: any }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
+    <div className="rounded-lg shadow-lg p-6">
       <h2 className="text-2xl font-semibold text-gray-700 mb-4">
         Success Rate Comparison
       </h2>

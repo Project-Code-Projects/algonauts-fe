@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useAddUserMutation } from "@/redux/api/userApi";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import alogoanutsLogo from "../../../../public/navbar/logo.png";
 
 const Signup = () => {
   const {
@@ -24,7 +25,7 @@ const Signup = () => {
     "w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-purple-500";
   const labelStyle = "block text-gray-700 text-sm font-bold mb-2";
   const buttonStyle =
-    "bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600";
+    "bg-green-500 text-white px-4 py-2 rounded hover:bg-purple-600";
   const errorStyle = "text-red-500 text-sm";
 
   // ! End of Tailwind style
@@ -43,15 +44,10 @@ const Signup = () => {
   };
 
   return (
-    <div className="bg-blue-100 h-[92vh] flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <div className=" h-[100vh] flex items-center justify-center">
+      <div className=" p-8  w-full max-w-md">
         <div className="flex justify-center mb-6">
-          <Image
-            src="https://codecombat.com/images/pages/base/logo.webp"
-            alt="Logo"
-            width={150}
-            height={150}
-          />
+          <Image src={alogoanutsLogo} alt="Logo" width={150} height={150} />
         </div>
         <h2 className="text-2xl font-bold text-center mb-8">Sign Up</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -150,7 +146,7 @@ const Signup = () => {
               {isLoading ? "Signing Up..." : "Sign Up"}
             </button>
             {isError && <p className={errorStyle}>{"Failed to sign up"}</p>}
-            <Link href="/login" className="text-purple-500 hover:underline">
+            <Link href="/login" className="text-blue-500 hover:underline">
               Already have an account? Login
             </Link>
           </div>

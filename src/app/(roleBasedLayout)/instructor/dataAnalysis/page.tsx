@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const DataAnalysisHomePage = () => {
   return (
-    <div className="container mx-auto px-4 py-8 bg-gray-50">
+    <div className="container mx-auto px-4 py-8 ">
       <h1 className="text-4xl font-bold text-center text-gray-800 mb-10">
         Data Analysis Home Page
       </h1>

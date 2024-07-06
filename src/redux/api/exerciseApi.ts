@@ -12,7 +12,25 @@ export const exerciseApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.exercise],
     }),
+    getExercisesByChapterId: build.query({
+      query: (chapterId) => ({
+        url: `${EXERCISE_URL}/chapter/${chapterId}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.exercise],
+    }),
+    getExercisesByChapterIdAndStudentIdAndIndexed: build.query({
+      query: ({ studentId, chapterId }) => ({
+        url: `${EXERCISE_URL}/${studentId}/${chapterId}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.exercise],
+    }),
   }),
 });
 
-export const { useGetNextExerciseQuery } = exerciseApi;
+export const {
+  useGetNextExerciseQuery,
+  useGetExercisesByChapterIdQuery,
+  useGetExercisesByChapterIdAndStudentIdAndIndexedQuery,
+} = exerciseApi;

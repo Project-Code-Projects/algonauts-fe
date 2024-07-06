@@ -27,6 +27,7 @@ import NotificationComponent from "@/components/NotificationComponent";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SocialPage from "@/components/social/social";
 import ExerciseProgressPieChart from "@/components/charts/ExerciseProgressPieChart";
+import { tailwindButtonClass } from "@/stylesShared/tailwindButtonClass";
 
 type HelpFormValues = {
   question: string;
@@ -152,9 +153,7 @@ const StudentPage = () => {
           numberOfExercisesDone={studentProgressData?.numberOfExercisesDone}
         />
         <Link href={"/student/syllabus"}>
-          <button className="inline-block px-6 py-3 bg-violet-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300 ease-in-out">
-            See syllabus
-          </button>
+          <button className={`${tailwindButtonClass}`}>See syllabus</button>
         </Link>
       </div>
 

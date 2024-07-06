@@ -32,7 +32,7 @@ const TestCaseTabs: React.FC<TestCaseTabsProps> = ({ testCases }) => {
           <button
             key={key}
             className={`px-4 py-2 mr-2 ${
-              activeTab === key ? "bg-blue-500 text-white" : "bg-gray-200"
+              activeTab === key ? "bg-green-500 text-white" : "bg-gray-200"
             } rounded`}
             onClick={() => setActiveTab(key)}
           >
@@ -40,7 +40,7 @@ const TestCaseTabs: React.FC<TestCaseTabsProps> = ({ testCases }) => {
           </button>
         ))}
       </div>
-      <div className="bg-gray-100 p-4 rounded">
+      <div className="bg-green-100 p-4 rounded">
         <h3 className="text-lg font-bold">{activeTab}</h3>
         <p>Input: {formatValue(testCases[activeTab].input)}</p>
         {testCases[activeTab].target !== undefined && (

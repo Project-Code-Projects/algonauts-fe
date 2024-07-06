@@ -6,6 +6,7 @@ import { storeUserInfo, getUserInfo } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { authEvents } from "@/utils/authEvents";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const {
@@ -13,7 +14,7 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [userLogin, { isLoading }] = useUserLoginMutation();
+  const [userLogin, { isLoading, isError }] = useUserLoginMutation();
 
   const [showPassword, setShowPassword] = useState(false);
   const toggleShowPassword = () => setShowPassword(!showPassword);
@@ -23,27 +24,34 @@ const LoginPage = () => {
   const onSubmit = async (data: any) => {
     try {
       const loginResponse = await userLogin(data).unwrap();
-      // console.log(loginResponse);
 
       if (loginResponse?.success) {
         storeUserInfo({ token: loginResponse?.data?.token });
         const userInfo = getUserInfo() as any;
-        // console.log(userInfo);
-        //  await setUserData(userInfo);
         authEvents.login();
         if (userInfo) {
-          // console.log(userInfo.type);
           router.push(`/${userInfo.type}`);
         }
+      } else {
+        // Handle unsuccessful login
+        toast.error(loginResponse.message || "Login failed. Please try again.");
       }
-    } catch (error) {
-      // Handle login error
+    } catch (error: any) {
+      console.error(error);
+      if (error.data) {
+        toast.error(
+          error.data.message ||
+            "An error occurred during login. Please try again."
+        );
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
     }
   };
 
   return (
-    <div className="bg-blue-100 h-[92vh] flex items-center justify-center">
-      <div className="bg-tan-500 border-4 border-gray-900 p-8 rounded-lg shadow-lg max-w-md w-full relative">
+    <div className="h-[100vh] flex items-center justify-center">
+      <div className="p-8  max-w-md w-full relative">
         <h1 className="text-gray-900 text-2xl mb-6 font-bold">
           EMAIL OR USERNAME:
         </h1>
@@ -81,7 +89,10 @@ const LoginPage = () => {
           )}
 
           <div className="flex items-center mb-6 ">
-            <Link href="/signup" className="text-red-500 hover:text-blue-700 ">
+            <Link
+              href="/signup/parentSignup"
+              className="text-red-500 hover:text-blue-700 "
+            >
               <p className=""> Don&apos;t have an account?</p>
             </Link>
           </div>
