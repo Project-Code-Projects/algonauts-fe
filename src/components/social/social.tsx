@@ -119,15 +119,14 @@ const Social = () => {
         userId: userInfo?._id,
       };
 
-      await likePost({ post_id:postId, data:likeData }).unwrap();
-
+      await likePost({ post_id: postId, data: likeData }).unwrap();
     } catch (error: any) {
       console.error("Failed to like post: ", error);
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4">
+    <div className=" max-w-4xl mx-auto py-8 px-4">
       <PostForm addPost={addPost} />
 
       {posts?.data.map((post: any) => (

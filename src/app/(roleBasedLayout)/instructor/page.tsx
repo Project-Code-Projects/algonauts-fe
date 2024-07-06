@@ -39,9 +39,9 @@ const InstructorProfilePage = () => {
   const instructorData = instructorDataFromBE?.data[0]?.userId;
 
   return (
-    <div className="min-h-[92vh] flex ">
+    <div className="min-h-[92vh] flex flex-col justify-center ">
       {/* Left side: Instructor Information */}
-      <div className="w-1/3 p-6 shadow-md">
+      <div className=" p-6 flex items-center justify-center">
         <div className="flex flex-col  mb-6">
           <Image
             src={`https://avatar.iran.liara.run/public/boy`}
@@ -58,8 +58,8 @@ const InstructorProfilePage = () => {
       </div>
 
       {/* Right side: Social and Help Request */}
-      <div className="w-2/3 p-6">
-        <Tabs defaultValue="social" className="w-full">
+      <div className=" p-6">
+        <Tabs defaultValue="social" className="w-full flex flex-col ">
           <TabsList className="mb-4">
             <TabsTrigger value="social" className="px-4 py-2">
               Social
