@@ -5,17 +5,15 @@ import Link from "next/link";
 import React from "react";
 
 const styles = {
-  container: "p-8 bg-gray-100 min-h-screen",
+  container: "p-8  min-h-screen",
   title: "text-3xl font-bold text-center mb-8",
   list: "space-y-4",
   listItem: "bg-white p-6 rounded-lg shadow-md hover:bg-gray-100",
   link: "text-lg font-semibold text-blue-600 hover:underline",
   errorMessage: "text-red-600 font-semibold text-center",
-
 };
 
 import SpinAnimation from "@/components/ui/SpinAnimation";
-
 
 type IParams = {
   chapterId: string;
@@ -27,17 +25,16 @@ const ProblemsByChapterPage = ({ params }: { params: IParams }) => {
 
   const {
     data: beginnerLevelData,
-    isLoading:isLevelLoading,
+    isLoading: isLevelLoading,
     isError,
-} = useGetBeginnerLevelQuery({chapterId: chapterId});
+  } = useGetBeginnerLevelQuery({ chapterId: chapterId });
 
   // if (isLoading) return <div>Loading...</div>;
   // if (error) return <div>Error fetching data</div>;
 
   if (isLevelLoading) return <SpinAnimation />;
-    if (isError)
-        return <div className={styles.errorMessage}>Error loading data</div>;
-
+  if (isError)
+    return <div className={styles.errorMessage}>Error loading data</div>;
 
   // const { chapter, exercises } = data.data;
 
