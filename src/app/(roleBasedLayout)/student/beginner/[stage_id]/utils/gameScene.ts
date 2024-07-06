@@ -16,8 +16,8 @@ export class GameScene extends Phaser.Scene {
 
     preload() {
         // Load assets here
-        this.load.image('sky', '../../assets/scifi wallpaper.png');
-        this.load.spritesheet('dude', '../../assets/astro.webp', { frameWidth: 42, frameHeight: 48 });
+        this.load.image('sky', '../../assets/image.png');
+        this.load.spritesheet('dude', '../../assets/astronaut.png', { frameWidth: 128, frameHeight: 192 });
         this.load.spritesheet('blackhole', '../../assets/fire.png', { frameWidth: 15, frameHeight: 24 });
         this.load.image('spacecraft', '../../assets/spaceship.png');
         this.load.spritesheet('explosion', '../../assets/busted1.png', { frameWidth: 127.5, frameHeight: 128 });
@@ -30,7 +30,7 @@ export class GameScene extends Phaser.Scene {
         // Create blackholes from gameData
         this.blackholes = this.physics.add.staticGroup();
         this.gameData.blackholes.forEach((bh: { x: number, y: number }) => {
-            const blackholeSprite = this.blackholes.create(bh.x, bh.y, 'blackhole').setOrigin(0, 0).setScale(1).refreshBody();
+            const blackholeSprite = this.blackholes.create(bh.x, bh.y, 'blackhole').setOrigin(0, 0).setScale(2).refreshBody();
             this.createBlackholeAnimation(blackholeSprite);
         });
 
@@ -39,7 +39,7 @@ export class GameScene extends Phaser.Scene {
         this.spacecraft.create(this.gameData.spacecraft.x, this.gameData.spacecraft.y, 'spacecraft').setOrigin(0, 0).setScale(1).refreshBody();
 
         // Create player from gameData
-        this.player = this.physics.add.sprite(this.gameData.player.x, this.gameData.player.y, 'dude');
+        this.player = this.physics.add.sprite(this.gameData.player.x, this.gameData.player.y, 'dude').setScale(0.25);
         this.player.setCircle(this.player.body.halfWidth, 0, this.player.body.halfHeight - this.player.body.halfWidth);
         this.physics.add.collider(this.player, this.ground);
 
@@ -64,7 +64,7 @@ export class GameScene extends Phaser.Scene {
 
         this.anims.create({
             key: 'move',
-            frames: this.anims.generateFrameNumbers('dude', { start: 6, end: 6 }),
+            frames: this.anims.generateFrameNumbers('dude', { start: 8, end: 11 }),
             frameRate: 10,
             repeat: -1,
         });
@@ -133,6 +133,10 @@ export class GameScene extends Phaser.Scene {
                 break;
         }
     }
+
+    restart() {
+        this.scene.restart();
+     }
 
     private handleBlackholeCollision(player:Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile , blackhole: Phaser.Types.Physics.Arcade.GameObjectWithBody | Phaser.Tilemaps.Tile) {
         const playerSprite = player as Phaser.Physics.Arcade.Sprite;

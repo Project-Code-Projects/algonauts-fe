@@ -4,7 +4,7 @@ import type { Edge, OnConnect } from "reactflow";
 import LinkedList from "./utils/LinkedList";
 import Game from "./game/Game1";
 import FlowContext from "./context/FlowContext";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import {
   Background,
   Controls,
@@ -24,6 +24,7 @@ import { traverseMovementChain } from "./utils/traverseMovementChain";
 import "./index.css";
 import { useGetBeginnerLevelByLevelIdQuery } from "@/redux/api/beginnerLevelApi";
 import { GameScene } from "./utils/gameScene";
+import refreshGameScene from "./utils/refreshGameScene";
 import { log } from "console";
 
 // Mock Data
@@ -48,12 +49,22 @@ export default function App({ params }: Params) {
   const { getNode } = useReactFlow();
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [code, setCode] = useState("");
-
+  const [movementChain, setMovementChain] = useState(
+    // Function to initialize movementChain
+    function chain () {
+      const a = new (LinkedList as any)();
+      return a;
+    }());
+  const [gameScene, setGameScene] = useState<GameScene | null>(null);
   const {
     data: gameData,
     isLoading: loadingLevel,
     isError: loadingLevelError,
   } = useGetBeginnerLevelByLevelIdQuery(levelId);
+
+  useEffect(() => setCode(gameData?.data?.description),[gameData]);
+  
+  
 
   // useCallback for memoization
   const onConnect: OnConnect = useCallback(
@@ -69,7 +80,7 @@ export default function App({ params }: Params) {
             color: "#d90fcb",
           },
           style: {
-            strokeWidth: 3,
+            strokeWidth: 7,
             stroke: "#784be8",
           },
         };
@@ -78,15 +89,14 @@ export default function App({ params }: Params) {
     [setEdges]
   );
 
-  // Function to initialize movementChain
-  const chain = () => {
-    const a = new (LinkedList as any)();
-    return a;
-  };
+  const onRefresh = useCallback((() => setEdges([])),[setEdges])
 
-  // State hooks
-  const [movementChain, setMovementChain] = useState(chain());
-  const [gameScene, setGameScene] = useState<GameScene | null>(null);
+  // // Function to initialize movementChain
+  // const chain = () => {
+  //   const a = new (LinkedList as any)();
+  //   return a;
+  // };
+ 
 
   // Early return for loading and error states
   if (loadingLevelError) return <div>Error...</div>;
@@ -297,12 +307,22 @@ export default function App({ params }: Params) {
     code += "}\n";
     return code;
   }
+  const refreshBody = () => {
+    setCode("");
+    setMovementChain( // Function to initialize movementChain
+      function chain () {
+        const a = new (LinkedList as any)();
+        return a;
+      }());
+      onRefresh();
+      refreshGameScene(gameScene!);
+  }
 
-  console.log(code);
+  
   // Rendering the component
   return (
     <FlowContext.Provider value={{ addNode, nodes }}>
-      <div className="flex w-full h-screen overflow-y-scroll bg-[#1c1b1a]">
+      <div className="flex w-full h-screen overflow-y-scroll bg-[#ebf3f5]">
         <div className="relative w-[70%]">
           <div className="editor-container">
             <div className="toolbar">
@@ -328,6 +348,12 @@ export default function App({ params }: Params) {
                   </button>
                 </div>
                 <div>
+                <button
+                    className="bg-[#0fd952] rounded-md mr-2 p-1 text-white border-2 border-black"
+                    onClick={refreshBody}
+                  >
+                    Refresh
+                  </button>
                   <button
                     className="bg-[#0fd952] rounded-md mr-2 p-1 text-white border-2 border-black"
                     onClick={moveSprite}
@@ -348,7 +374,7 @@ export default function App({ params }: Params) {
             onConnect={onConnect}
             fitView
           >
-            <Background color="#f2e707" variant={BackgroundVariant.Cross} />
+            <Background color="#080807" size={1} variant={BackgroundVariant.Cross} />
             <Controls />
           </ReactFlow>
         </div>
