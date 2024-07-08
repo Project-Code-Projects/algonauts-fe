@@ -4,22 +4,22 @@ import Slider from "react-slick";
 
 const testimonials = [
   {
-    name: "Emily Anderson",
+    name: "Tanvir Hasan Prince",
     text: "My daughter loves this program! She's learning so much and having fun at the same time.",
     avatar:
-      "https://images.pexels.com/photos/3764119/pexels-photo-3764119.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://media.licdn.com/dms/image/D5603AQEiMunth_XhuA/profile-displayphoto-shrink_800_800/0/1715702300610?e=1726099200&v=beta&t=bF-R74UB9qTBQT184icCMfCJF4s3LT-JNAP-Vzz2YFM",
   },
   {
-    name: "Michael Brown",
+    name: "Muhtasim Hafiz",
     text: "This coding platform has been a game changer for my son. He can't wait for his next lesson.",
     avatar:
-      "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://media.licdn.com/dms/image/D5603AQHdmuQQeWHhpg/profile-displayphoto-shrink_400_400/0/1679775181940?e=1726099200&v=beta&t=aoayVEI7GIA2MwyqnICCqOVsHl65X5WywP3QUz_o9zM",
   },
   {
-    name: "Sophia Garcia",
+    name: "Istiaque Reza Auyon",
     text: "Highly recommended! My children are engaged and learning important skills for the future.",
     avatar:
-      "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://media.licdn.com/dms/image/D5635AQEO_VVZsDANkA/profile-framedphoto-shrink_800_800/0/1719436480959?e=1721023200&v=beta&t=3MAb9EyonKBqc0gxj7mjovTchPkTdmQEaQkvtLeOhxk",
   },
 ];
 

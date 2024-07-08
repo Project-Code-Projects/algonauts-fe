@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { authEvents } from "@/utils/authEvents";
 import toast from "react-hot-toast";
+import alogoanutsLogo from "../../../public/navbar/logo.png";
+import Image from "next/image";
 
 const LoginPage = () => {
   const {
@@ -29,7 +31,8 @@ const LoginPage = () => {
         storeUserInfo({ token: loginResponse?.data?.token });
         const userInfo = getUserInfo() as any;
         authEvents.login();
-        if (userInfo) {
+        if (userInfo && userInfo.type) {
+          toast.success("Login successfull. Redirecting you to your dashboard");
           router.push(`/${userInfo.type}`);
         }
       } else {
@@ -52,10 +55,12 @@ const LoginPage = () => {
   return (
     <div className="h-[100vh] flex items-center justify-center">
       <div className="p-8  max-w-md w-full relative">
-        <h1 className="text-gray-900 text-2xl mb-6 font-bold">
-          EMAIL OR USERNAME:
-        </h1>
+        <div className="flex justify-center mb-6">
+          <Image src={alogoanutsLogo} alt="Logo" width={150} height={150} />
+        </div>
+        <h1 className="text-2xl font-bold text-center mb-8">Login</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <h2 className="block text-gray-700 text-sm font-bold mb-2">Email:</h2>
           <input
             type="text"
             className="w-full p-2 mb-4 border-2 border-gray-900 rounded"
@@ -66,7 +71,9 @@ const LoginPage = () => {
             <p className="text-red-600">{errors.email.message as string}</p>
           )}
           <div className="relative">
-            <h2 className="text-gray-900 text-2xl mb-2 font-bold">PASSWORD:</h2>
+            <h2 className="block text-gray-700 text-sm font-bold mb-2">
+              Password:
+            </h2>
             <input
               type={showPassword ? "text" : "password"}
               className="w-full p-2 mb-4 border-2 border-gray-900 rounded"
@@ -91,15 +98,15 @@ const LoginPage = () => {
           <div className="flex items-center mb-6 ">
             <Link
               href="/signup/parentSignup"
-              className="text-red-500 hover:text-blue-700 "
+              className="text-blue-600 hover:text-blue-700 "
             >
-              <p className=""> Don&apos;t have an account?</p>
+              <p className=""> Don&apos;t have an account? Sign up please</p>
             </Link>
           </div>
 
           <button
             type="submit"
-            className="bg-green-600 text-white w-full py-2 rounded text-xl font-bold hover:bg-green-700"
+            className="w-full bg-green-500 text-white px-4 py-2 rounded hover:bg-purple-600"
             disabled={isLoading}
           >
             {isLoading ? "LOGGING IN..." : "LOG IN"}

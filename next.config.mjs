@@ -46,6 +46,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "avatar.iran.liara.run",
       },
+      {
+        protocol: "https",
+        hostname: "media.licdn.com",
+      },
     ],
   },
 };
