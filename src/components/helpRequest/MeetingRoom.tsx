@@ -24,11 +24,12 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
 
   useEffect(() => {
     const newPeer = new Peer(meetingPeerId, {
-      host: process.env.NEXT_PUBLIC_PEERJS_HOST,
-      port: Number(process.env.NEXT_PUBLIC_PEERJS_PORT),
+      host: process.env.NEXT_PUBLIC_HOST,
+      port: Number(process.env.NEXT_PUBLIC_PORT),
       path: '/peerjs/myapp',
+      // secure:true,
       // secure: process.env.NEXT_PUBLIC_PEERJS_SECURE === 'true',
-      debug: 3, // Enable debugging
+      // debug: 3, // Enable debugging
       config: {
         iceServers: [
           {
