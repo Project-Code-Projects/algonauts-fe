@@ -25,14 +25,31 @@ const HelpRequestStudentComponent = ({ data }: { data: Question[] }) => {
     setModalContent(notes);
     setShowModal(true);
   };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "pending":
+        return "text-yellow-500";
+      case "accepted":
+        return "text-blue-500";
+      case "completed":
+        return "text-green-500";
+      default:
+        return "text-gray-500";
+    }
+  };
+
   return (
-    <div className="container mx-auto p-8  shadow-md">
+    <div className="container mx-auto p-8 bg-white shadow-md">
       <h1 className="text-3xl font-bold text-center mb-6">Student Questions</h1>
       <ul className="space-y-4">
         {data.map((item) => (
-          <li key={item._id} className="  p-6  m-4">
+          <li
+            key={item._id}
+            className="bg-white shadow-md rounded-lg p-6 border border-gray-300 m-4"
+          >
             <p className="text-lg font-semibold mb-2">{item.question}</p>
-            <p className="text-sm text-gray-600">
+            <p className={`text-sm ${getStatusColor(item.status)}`}>
               <strong>Status:</strong> {item.status}
             </p>
             <p className="text-sm text-gray-600">
@@ -68,7 +85,6 @@ const HelpRequestStudentComponent = ({ data }: { data: Question[] }) => {
         ))}
       </ul>
 
-      {/* Modal to show notes */}
       <Dialog open={showModal} onOpenChange={() => setShowModal(!showModal)}>
         <DialogContent>
           <DialogHeader>

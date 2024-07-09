@@ -5,10 +5,12 @@ import { useRouter } from "next/navigation";
 
 const NotificationComponent: React.FC = () => {
   const notifications = useSelector((state: RootState) => state.notifications);
+  console.log('notifications:', notifications);
   const history = useRouter();
 
   const handleJoinMeeting = (roomId: string) => {
     history.push(`/meeting/${roomId}`);
+
   };
 
   return (

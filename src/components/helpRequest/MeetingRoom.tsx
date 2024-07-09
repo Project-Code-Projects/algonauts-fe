@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useEffect, useRef, useState } from 'react';
 import Peer from 'peerjs';
 import { FaMicrophone, FaMicrophoneSlash, FaVideo, FaVideoSlash, FaPhone, FaPhoneSlash } from 'react-icons/fa';
@@ -21,16 +22,40 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
 
-  console.log('roomId:', roomId);
-  console.log('meetingPeerId:', meetingPeerId);
-  console.log('meetingRemotePeerId:', meetingRemotePeerId);
-
   useEffect(() => {
     const newPeer = new Peer(meetingPeerId, {
-      host: process.env.NEXT_PUBLIC_HOST, 
-      port: Number(process.env.NEXT_PUBLIC_PORT), 
+      host: process.env.NEXT_PUBLIC_PEERJS_HOST,
+      port: Number(process.env.NEXT_PUBLIC_PEERJS_PORT),
       path: '/peerjs/myapp',
-      // secure: true, // Use secure true if you are using https
+      // secure: process.env.NEXT_PUBLIC_PEERJS_SECURE === 'true',
+      debug: 3, // Enable debugging
+      config: {
+        iceServers: [
+          {
+            urls: "stun:stun.relay.metered.ca:80",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80",
+            username: "62dafdf8f290a4c29e122472",
+            credential: "jdQlBBxQc4MCNzkN",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:80?transport=tcp",
+            username: "62dafdf8f290a4c29e122472",
+            credential: "jdQlBBxQc4MCNzkN",
+          },
+          {
+            urls: "turn:global.relay.metered.ca:443",
+            username: "62dafdf8f290a4c29e122472",
+            credential: "jdQlBBxQc4MCNzkN",
+          },
+          {
+            urls: "turns:global.relay.metered.ca:443?transport=tcp",
+            username: "62dafdf8f290a4c29e122472",
+            credential: "jdQlBBxQc4MCNzkN",
+          },
+        ],
+      }
     });
 
     newPeer.on('open', (id) => {
@@ -38,31 +63,11 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
       console.log('My peer ID is: ' + id);
     });
 
-    newPeer.on('call', (incomingCall) => {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        .then((stream) => {
-          localStreamRef.current = stream;
-          if (localVideoRef.current) {
-            localVideoRef.current.srcObject = stream;
-          }
-          incomingCall.answer(stream);
-          setCall(incomingCall);
-          setIsCallActive(true);
-          incomingCall.on('stream', (remoteStream) => {
-            if (remoteVideoRef.current) {
-              remoteVideoRef.current.srcObject = remoteStream;
-            }
-          });
-        })
-        .catch((err) => {
-          setError('Failed to access media devices.');
-          console.error(err);
-        });
-    });
+    newPeer.on('call', handleIncomingCall);
 
     newPeer.on('error', (err) => {
-      setError('An error occurred with the peer connection.');
-      console.error(err);
+      setError(`An error occurred with the peer connection: ${err.type}`);
+      console.error('Peer error:', err);
     });
 
     setPeer(newPeer);
@@ -70,7 +75,31 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
     return () => {
       newPeer.destroy();
     };
-  }, []);
+  }, [meetingPeerId]);
+
+  const handleIncomingCall = (incomingCall: any) => {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        localStreamRef.current = stream;
+        if (localVideoRef.current) {
+          localVideoRef.current.srcObject = stream;
+        }
+        incomingCall.answer(stream);
+        setCall(incomingCall);
+        setIsCallActive(true);
+        incomingCall.on('stream', handleRemoteStream);
+      })
+      .catch((err) => {
+        setError(`Failed to access media devices: ${err.message}`);
+        console.error('Media device error:', err);
+      });
+  };
+
+  const handleRemoteStream = (remoteStream: MediaStream) => {
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.srcObject = remoteStream;
+    }
+  };
 
   const startCall = () => {
     if (peer) {
@@ -84,15 +113,11 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
           const outgoingCall = peer.call(meetingRemotePeerId, stream);
           setCall(outgoingCall);
           setIsCallActive(true);
-          outgoingCall.on('stream', (remoteStream) => {
-            if (remoteVideoRef.current) {
-              remoteVideoRef.current.srcObject = remoteStream;
-            }
-          });
+          outgoingCall.on('stream', handleRemoteStream);
         })
         .catch((err) => {
-          setError('Failed to start call.');
-          console.error(err);
+          setError(`Failed to start call: ${err.message}`);
+          console.error('Start call error:', err);
         });
     } else {
       setError('Peer connection is not established.');
@@ -136,7 +161,7 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
       ) : (
         <p className="text-center mb-4">Connecting...</p>
       )}
-      {error && <p className="text-center mb-4 text-red-500">{error}</p>}
+      {/* {error && <p className="text-center mb-4 text-red-500">{error}</p>} */}
       <div className="flex justify-center mb-4">
         {!isCallActive ? (
           <button 
