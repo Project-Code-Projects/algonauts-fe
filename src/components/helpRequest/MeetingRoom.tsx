@@ -29,7 +29,7 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ roomId, meetingPeerId, meetin
       path: '/peerjs/myapp',
       // secure:true,
       // secure: process.env.NEXT_PUBLIC_PEERJS_SECURE === 'true',
-      // debug: 3, // Enable debugging
+      debug: 3, // Enable debugging
       config: {
         iceServers: [
           {
